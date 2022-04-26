@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="33cd20add06c493f9c2f7a964b3c466c" Name="Diagram1" ZoomLevel="64">
+        <EntityTypeShape EntityType="VapourDatabaseModel.Comment" Width="1.5" PointX="10.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VapourDatabaseModel.Follow" Width="1.5" PointX="9.875" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VapourDatabaseModel.Game" Width="1.5" PointX="2.25" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="VapourDatabaseModel.GamesCollection" Width="1.5" PointX="2.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="VapourDatabaseModel.Genre" Width="1.5" PointX="4.625" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="VapourDatabaseModel.Rate" Width="1.5" PointX="8.125" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="VapourDatabaseModel.Role" Width="1.5" PointX="6" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="VapourDatabaseModel.User" Width="1.5" PointX="5.375" PointY="3.125" IsExpanded="true" />
+        <AssociationConnector Association="VapourDatabaseModel.FK_Comment_Game" ManuallyRouted="false" />
+        <AssociationConnector Association="VapourDatabaseModel.FK_Comment_User" ManuallyRouted="false" />
+        <AssociationConnector Association="VapourDatabaseModel.FK_Follow_Follower" ManuallyRouted="false" />
+        <AssociationConnector Association="VapourDatabaseModel.FK_Follow_User" ManuallyRouted="false" />
+        <AssociationConnector Association="VapourDatabaseModel.FK_Game_Genre" ManuallyRouted="false" />
+        <AssociationConnector Association="VapourDatabaseModel.FK_GamesCollection_Game" ManuallyRouted="false" />
+        <AssociationConnector Association="VapourDatabaseModel.FK_Rate_Game" ManuallyRouted="false" />
+        <AssociationConnector Association="VapourDatabaseModel.FK_GamesCollection_User" ManuallyRouted="false" />
+        <AssociationConnector Association="VapourDatabaseModel.FK_Rate_User" ManuallyRouted="false" />
+        <AssociationConnector Association="VapourDatabaseModel.FK_User_Role" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
