@@ -18,10 +18,9 @@ namespace Vapour
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            
-            // var dataContext = new VapourDatabaseEntities();
-            // var seeder = new DataSeeder(dataContext);
-            // seeder.Seed();
+            var dataContext = new VapourDatabaseEntities();
+            var seeder = new DataSeeder(dataContext);
+            seeder.Seed();
 
             var window = new MainWindow();
             window.DataContext = new MainWindowViewModel();
