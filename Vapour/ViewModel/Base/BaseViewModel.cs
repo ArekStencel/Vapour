@@ -9,7 +9,7 @@ using Vapour.Annotations;
 
 namespace Vapour.ViewModel
 {
-    internal class BaseViewModel : INotifyPropertyChanged
+    public class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

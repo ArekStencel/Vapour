@@ -4,9 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Vapour"
+        xmlns:view="clr-namespace:Vapour.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Vapour" Height="450" Width="800">
     <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <view:NavigationView Grid.Row="0" DataContext="{Binding Navigator}"/>
+
+        <ContentControl Grid.Row="1" Content="{Binding Navigator.CurrentViewModel}" />
 
     </Grid>
 </Window>
