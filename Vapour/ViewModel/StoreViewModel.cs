@@ -18,16 +18,29 @@ namespace Vapour.ViewModel
             set
             {
                 _user = value;
-                OnPropertyChanged(User);
+                OnPropertyChanged(nameof(User));
+            }
+        }
+
+        private List<string> _users = new List<string>();
+
+        public List<string> Users
+        {
+            get => _users;
+            set
+            {
+                _users = value;
+                OnPropertyChanged(nameof(Users));
             }
         }
 
         public StoreViewModel()
         {
-            Console.WriteLine("store");
-            Console.WriteLine(_data.Users.First().ToString());
-            Console.WriteLine(_data.Users.First().Email);
-            User = _data.Users.First().Name;
+            var users = _data.Users.ToList();
+            foreach (var user in users.Where(user => _users != null))
+            {
+                _users.Add(user.ToString());
+            }
         }
     }
 }

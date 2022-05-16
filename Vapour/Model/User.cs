@@ -31,7 +31,12 @@ namespace Vapour.Model
         public decimal WalletBalance { get; set; }
         public int RoleId { get; set; }
         public string Description { get; set; }
-    
+
+        public override string ToString()
+        {
+            return $"name: {Name}, email: {Email}, wallet: {WalletBalance}";
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
