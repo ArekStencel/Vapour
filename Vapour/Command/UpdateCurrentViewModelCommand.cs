@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using Vapour.Services;
 using Vapour.State;
 using Vapour.ViewModel;
 
@@ -10,6 +11,7 @@ namespace Vapour.Command
         public event EventHandler CanExecuteChanged;
 
         private INavigator _navigator;
+        // private IAuthenticator _authenticator;
 
         public UpdateCurrentViewModelCommand(INavigator navigator)
         {
@@ -28,6 +30,9 @@ namespace Vapour.Command
                 var viewType = (ViewType)parameter;
                 switch (viewType)
                 {
+                    case ViewType.Login:
+                        _navigator.CurrentViewModel = new LoginViewModel(new Authenticator(new AuthenticationService()));
+                        break;
                     case ViewType.Library:
                         _navigator.CurrentViewModel = new LibraryViewModel();
                         break;
@@ -37,6 +42,8 @@ namespace Vapour.Command
                     case ViewType.Community:
                         _navigator.CurrentViewModel = new CommunityViewModel();
                         break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
         }

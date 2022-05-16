@@ -25,12 +25,19 @@ namespace Vapour.Services
                 result = RegistrationResult.PasswordsDoNotMatch;
             }
 
-            // Todo change if statement
-            // var emailAccount = _data.Users.All(u => u.Email.Equals(email)); // await _accountService.GetByEmail(email);
-            // if (emailAccount)
-            // {
-            //     result = RegistrationResult.EmailAlreadyExists;
-            // }
+            var emailAccount = false;
+            foreach (var dataUser in _data.Users)
+            {
+                if (dataUser.Email.Equals(email))
+                {
+                    emailAccount = true;
+                }
+            }
+
+            if (emailAccount)
+            {
+                result = RegistrationResult.EmailAlreadyExists;
+            }
 
             if (result == RegistrationResult.Success)
             {

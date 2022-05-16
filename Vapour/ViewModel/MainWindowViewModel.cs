@@ -9,6 +9,13 @@ namespace Vapour.ViewModel
 {
     public class MainWindowViewModel : BaseViewModel
     {
-        public INavigator Navigator { get; set; } = new Navigator();
+        public INavigator Navigator { get; set; }
+
+        public MainWindowViewModel(INavigator navigator)
+        {
+            Navigator = navigator;
+
+            Navigator.UpdateCurrentViewModelCommand.Execute(ViewType.Login);
+        }
     }
 }

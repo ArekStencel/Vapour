@@ -5,6 +5,7 @@
              xmlns:view="clr-namespace:Vapour.View"
              xmlns:local="clr-namespace:Vapour">
     <!-- StartupUri="View/MainWindowView.xaml"> -->
+
     <Application.Resources>
         
         <DataTemplate DataType="{x:Type viewmodel:LibraryViewModel}">
@@ -17,6 +18,10 @@
 
         <DataTemplate DataType="{x:Type viewmodel:CommunityViewModel}">
             <view:CommunityView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodel:LoginViewModel}">
+            <view:LoginView LoginCommand="{Binding LoginCommand}"/>
         </DataTemplate>
 
     </Application.Resources>

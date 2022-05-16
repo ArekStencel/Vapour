@@ -28,23 +28,29 @@ namespace Vapour
 
             var serviceProvider = CreateServiceProvider();
             var authentication = serviceProvider.GetRequiredService<IAuthenticationService>();
-            authentication.Register("dobrypiesio@interia.pl", "piesio", "dobrypiesio", "dobrypiesio");
+            authentication.Register("piesio@test.pl", "piesio", "dobrypiesio", "dobrypiesio");
+            // var loggedUser = authentication.Login("dobrypiesio@interia.pl", "dobrypiesio");
 
-
-
-            var window = new MainWindow();
-            window.DataContext = new MainWindowViewModel();
+            var window = serviceProvider.GetRequiredService<MainWindow>();
             window.Show();
+
             base.OnStartup(e);
         }
 
-        private IServiceProvider CreateServiceProvider()
+        private static IServiceProvider CreateServiceProvider()
         {
             var services = new ServiceCollection();
 
             services.AddSingleton<IAuthenticationService, AuthenticationService>();
+            // todo add passwordhasher
+            // services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
             services.AddScoped<INavigator, Navigator>();
+            services.AddScoped<IAuthenticator, Authenticator>();
+
+            services.AddScoped<MainWindowViewModel>();
+
+            services.AddScoped<MainWindow>(s => new MainWindow(s.GetRequiredService<MainWindowViewModel>()));
 
             return services.BuildServiceProvider();
         }

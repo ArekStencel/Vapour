@@ -2,6 +2,7 @@
 {
     public enum ViewType
     {
+        Login,
         Library,
         Store,
         Community  
