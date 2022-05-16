@@ -12,6 +12,7 @@ using Vapour.Model;
 using Vapour.Services;
 using Vapour.State;
 using Vapour.ViewModel;
+using Vapour.ViewModel.Factories;
 
 namespace Vapour
 {
@@ -42,6 +43,11 @@ namespace Vapour
             var services = new ServiceCollection();
 
             services.AddSingleton<IAuthenticationService, AuthenticationService>();
+            services.AddSingleton<IRootViewModelFactory, RootViewModelFactory>();
+            services.AddSingleton<IViewModelFactory<LibraryViewModel>, LibraryViewModelFactory>();
+            services.AddSingleton<IViewModelFactory<CommunityViewModel>, CommunityViewModelFactory>();
+            services.AddSingleton<IViewModelFactory<StoreViewModel>, StoreViewModelFactory>();
+            services.AddSingleton<IViewModelFactory<LoginViewModel>, LoginViewModelFactory>();
             // todo add passwordhasher
             // services.AddSingleton<IPasswordHasher, PasswordHasher>();
 

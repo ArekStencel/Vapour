@@ -4,12 +4,14 @@ using System.Windows.Input;
 using Vapour.Annotations;
 using Vapour.Command;
 using Vapour.ViewModel;
+using Vapour.ViewModel.Factories;
 
 namespace Vapour.State
 {
     public class Navigator : BaseViewModel, INavigator
     {
         private BaseViewModel _currentViewModel;
+
         public BaseViewModel CurrentViewModel
         {
             get => _currentViewModel;
@@ -20,6 +22,11 @@ namespace Vapour.State
             }
         }
 
-        public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this);
+        public ICommand UpdateCurrentViewModelCommand { get; set; }
+
+        public Navigator(IRootViewModelFactory viewModelFactory)
+        {
+            UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(this, viewModelFactory);
+        }
     }
 }

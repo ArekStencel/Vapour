@@ -3,6 +3,7 @@ using System.Windows.Input;
 using Vapour.Services;
 using Vapour.State;
 using Vapour.ViewModel;
+using Vapour.ViewModel.Factories;
 
 namespace Vapour.Command
 {
@@ -10,12 +11,13 @@ namespace Vapour.Command
     {
         public event EventHandler CanExecuteChanged;
 
-        private INavigator _navigator;
-        // private IAuthenticator _authenticator;
+        private readonly INavigator _navigator;
+        private readonly IRootViewModelFactory _viewModelFactory;
 
-        public UpdateCurrentViewModelCommand(INavigator navigator)
+        public UpdateCurrentViewModelCommand(INavigator navigator, IRootViewModelFactory viewModelFactory)
         {
             _navigator = navigator;
+            _viewModelFactory = viewModelFactory;
         }
 
         public bool CanExecute(object parameter)
@@ -28,23 +30,8 @@ namespace Vapour.Command
             if (parameter is ViewType)
             {
                 var viewType = (ViewType)parameter;
-                switch (viewType)
-                {
-                    case ViewType.Login:
-                        _navigator.CurrentViewModel = new LoginViewModel(new Authenticator(new AuthenticationService()));
-                        break;
-                    case ViewType.Library:
-                        _navigator.CurrentViewModel = new LibraryViewModel();
-                        break;
-                    case ViewType.Store:
-                        _navigator.CurrentViewModel = new StoreViewModel();
-                        break;
-                    case ViewType.Community:
-                        _navigator.CurrentViewModel = new CommunityViewModel();
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+
+                _navigator.CurrentViewModel = _viewModelFactory.CreateViewModel(viewType);
             }
         }
     }

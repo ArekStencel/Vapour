@@ -29,7 +29,7 @@ namespace Vapour.Command
 
         public async void Execute(object parameter)
         {
-            var success = await _authenticator.Login(_loginViewModel.Email, string.Empty);
+            var success = await _authenticator.Login(_loginViewModel.Email, parameter.ToString());
         }
     }
 }

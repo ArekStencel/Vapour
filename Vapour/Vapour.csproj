@@ -110,6 +110,13 @@
     <Compile Include="State\RegistrationResult.cs" />
     <Compile Include="State\ViewType.cs" />
     <Compile Include="ViewModel\CommunityViewModel.cs" />
+    <Compile Include="ViewModel\Factories\CommunityViewModelFactory.cs" />
+    <Compile Include="ViewModel\Factories\IRootViewModelFactory.cs" />
+    <Compile Include="ViewModel\Factories\IViewModelFactory.cs" />
+    <Compile Include="ViewModel\Factories\LibraryViewModelFactory.cs" />
+    <Compile Include="ViewModel\Factories\LoginViewModelFactory.cs" />
+    <Compile Include="ViewModel\Factories\RootViewModelFactory.cs" />
+    <Compile Include="ViewModel\Factories\StoreViewModelFactory.cs" />
     <Compile Include="ViewModel\LibraryViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\StoreViewModel.cs" />
