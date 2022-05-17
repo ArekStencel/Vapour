@@ -29,7 +29,7 @@ namespace Vapour
 
             var serviceProvider = CreateServiceProvider();
             var authentication = serviceProvider.GetRequiredService<IAuthenticationService>();
-            authentication.Register("piesio@test.pl", "piesio", "dobrypiesio", "dobrypiesio");
+            authentication.Register("", "piesio", "", "");
             // var loggedUser = authentication.Login("dobrypiesio@interia.pl", "dobrypiesio");
 
             var window = serviceProvider.GetRequiredService<MainWindow>();

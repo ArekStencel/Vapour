@@ -34,10 +34,52 @@ namespace Vapour.Database
                     _dataContext.Users.AddRange(users);
                     _dataContext.SaveChanges();
                 }
+
+                if (!_dataContext.Genres.Any())
+                {
+                    var genres = AddGenres();
+                    _dataContext.Genres.AddRange(genres);
+                    _dataContext.SaveChanges();
+                }
+
+                if (!_dataContext.Games.Any())
+                {
+                    var games = AddGames();
+                    _dataContext.Games.AddRange(games);
+                    _dataContext.SaveChanges();
+                }
+
+                if (!_dataContext.Comments.Any())
+                {
+                    var comments = AddComments();
+                    _dataContext.Comments.AddRange(comments);
+                    _dataContext.SaveChanges();
+                }
+
+                if (!_dataContext.Rates.Any())
+                {
+                    var rates = AddRates();
+                    _dataContext.Rates.AddRange(rates);
+                    _dataContext.SaveChanges();
+                }
+
+                if (!_dataContext.GamesCollections.Any())
+                {
+                    var gamesCollections = AddGamesCollections();
+                    _dataContext.GamesCollections.AddRange(gamesCollections);
+                    _dataContext.SaveChanges();
+                }
+
+                if (!_dataContext.Follows.Any())
+                {
+                    var follows = AddFollows();
+                    _dataContext.Follows.AddRange(follows);
+                    _dataContext.SaveChanges();
+                }
             }
         }
 
-        private IEnumerable<Role> AddRoles()
+        private static IEnumerable<Role> AddRoles()
         {
             var roles = new List<Role>()
             {
@@ -54,7 +96,7 @@ namespace Vapour.Database
             return roles;
         }
 
-        private IEnumerable<User> AddUsers()
+        private static IEnumerable<User> AddUsers()
         {
             var users = new List<User>()
             {
@@ -97,6 +139,342 @@ namespace Vapour.Database
             };
 
             return users;
+        }
+
+        private static IEnumerable<Genre> AddGenres()
+        {
+            var genres = new List<Genre>()
+            {
+                new Genre()
+                {
+                    Name = "Action"
+                },
+                new Genre()
+                {
+                    Name = "Shooter"
+                },
+                new Genre()
+                {
+                    Name = "Sports games"
+                },
+                new Genre()
+                {
+                    Name = "Role-playing"
+                },
+                new Genre()
+                {
+                    Name = "Fighting"
+                },
+                new Genre()
+                {
+                    Name = "Racing"
+                },
+                new Genre()
+                {
+                    Name = "Strategy"
+                },
+                new Genre()
+                {
+                    Name = "Casual"
+                },
+                new Genre()
+                {
+                    Name = "Arcade"
+                }
+            };
+
+            return genres;
+        }
+
+        private static IEnumerable<Game> AddGames()
+        {
+            var games = new List<Game>()
+            {
+                new Game()
+                {
+                    Title = "Doom Eternal",
+                    Price = 200.99m,
+                    Description = "Become the Slayer in an epic single-player campaign to conquer demons across dimensions and stop the final destruction of humanity.",
+                    ReleaseDate = new DateTime(2020, 3, 20),
+                    GenreId = 2
+                },
+                new Game()
+                {
+                    Title = "Terraria",
+                    Price = 35.99m,
+                    Description = "Minecraft but in 2D",
+                    ReleaseDate = new DateTime(2011, 5, 16),
+                    GenreId = 1
+                },
+                new Game()
+                {
+                    Title = "Ghost Of Tsushima",
+                    Price = 159.49m,
+                    Description = "Featuring an open world, the player controls Jin Sakai, a samurai on a quest to protect Tsushima Island during the first Mongol invasion of Japan.",
+                    ReleaseDate = new DateTime(2020, 7, 17),
+                    GenreId = 1
+                },
+                new Game()
+                {
+                    Title = "League Of Legends",
+                    Price = 0.0m,
+                    Description = "League of Legends is a team-based game with over 140 champions to make epic plays with.",
+                    ReleaseDate = new DateTime(2009, 10, 27),
+                    GenreId = 7
+                },
+                new Game()
+                {
+                    Title = "Minecraft",
+                    Price = 120.0m,
+                    Description = "Terraria but in 3D",
+                    ReleaseDate = new DateTime(2011, 11, 18),
+                    GenreId = 8
+                },
+                new Game()
+                {
+                    Title = "Elden Ring",
+                    Price = 249.00m,
+                    Description = "Elden Ring is presented through a third-person perspective, with players freely roaming its interactive open world. Gameplay elements include combat featuring several types of weapons and magic spells, horseback riding, summons, and crafting.",
+                    ReleaseDate = new DateTime(2022, 2, 25),
+                    GenreId = 4
+                },
+                new Game()
+                {
+                    Title = "The Witcher 3 - Wild Hunt",
+                    Price = 42.0m,
+                    Description = "The Witcher 3: Wild Hunt is an action role-playing game with a third-person perspective. Players control Geralt of Rivia, a monster slayer known as a Witcher",
+                    ReleaseDate = new DateTime(2015, 5, 18),
+                    GenreId = 4
+                },
+                new Game()
+                {
+                    Title = "Call of Duty - Cold War",
+                    Price = 78.34m,
+                    Description = "Call of Duty: Black Ops Cold War is set during the Cold War in the early 1980s.",
+                    ReleaseDate = new DateTime(2020, 11, 13),
+                    GenreId = 2
+                },
+                new Game()
+                {
+                    Title = "Far Cry 3",
+                    Price = 12.87m,
+                    Description = "Far Cry 3 is a first-person shooter set on the fictional Rook Islands, a tropical archipelago somewhere in the Pacific, controlled by pirates and mercenaries.",
+                    ReleaseDate = new DateTime(2012, 11, 29),
+                    GenreId = 2
+                },
+                new Game()
+                {
+                    Title = "Hades",
+                    Price = 80.0m,
+                    Description = "Hades in the ancient Greek religion and myth, is the god of the dead and the king of the underworld, with which his name became synonymous.",
+                    ReleaseDate = new DateTime(2020, 9, 17),
+                    GenreId = 9
+                },
+                new Game()
+                {
+                    Title = "Grand Theft Auto V",
+                    Price = 45.45m,
+                    Description = "Grand Theft Auto V is an action-adventure game played from either a third-person or first-person perspective.",
+                    ReleaseDate = new DateTime(2013, 9, 17),
+                    GenreId = 2
+                }
+            };
+
+            return games;
+        }
+
+        private static IEnumerable<Comment> AddComments()
+        {
+            var comments = new List<Comment>()
+            {
+                new Comment()
+                {
+                    Text = "Fajne",
+                    CreatedAt = new DateTime(2022, 2, 12, 12, 3, 1),
+                    GameId = 1,
+                    UserId = 2
+                },
+                new Comment()
+                {
+                    Text = "nie fajne",
+                    CreatedAt = new DateTime(2022, 3, 13, 7, 31, 41),
+                    GameId = 2,
+                    UserId = 2
+                },
+                new Comment()
+                {
+                    Text = "mi sie podoba",
+                    CreatedAt = new DateTime(2022, 3, 13, 7, 31, 17),
+                    GameId = 1,
+                    UserId = 3
+                },
+                new Comment()
+                {
+                    Text = "2/10",
+                    CreatedAt = new DateTime(2022, 1, 21, 8, 12, 13),
+                    GameId = 3,
+                    UserId = 3
+                },
+                new Comment()
+                {
+                    Text = "gupie",
+                    CreatedAt = new DateTime(2022, 1, 21, 8, 12, 13),
+                    GameId = 1,
+                    UserId = 4
+                },
+            };
+
+            return comments;
+        }
+
+        private static IEnumerable<Rate> AddRates()
+        {
+            var rates = new List<Rate>()
+            {
+                new Rate()
+                {
+                    Rate1 = 5,
+                    UserId = 1,
+                    GameId = 1
+                },
+                new Rate()
+                {
+                    Rate1 = 4,
+                    UserId = 1,
+                    GameId = 2
+                },
+                new Rate()
+                {
+                    Rate1 = 3,
+                    UserId = 1,
+                    GameId = 3
+                },
+                new Rate()
+                {
+                    Rate1 = 3,
+                    UserId = 2,
+                    GameId = 1
+                },
+                new Rate()
+                {
+                    Rate1 = 2,
+                    UserId = 3,
+                    GameId = 1
+                },
+                new Rate()
+                {
+                    Rate1 = 1,
+                    UserId = 4,
+                    GameId = 1
+                },
+                new Rate()
+                {
+                    Rate1 = 3,
+                    UserId = 2,
+                    GameId = 2
+                },
+                new Rate()
+                {
+                    Rate1 = 6,
+                    UserId = 2,
+                    GameId = 3
+                },
+            };
+
+            return rates;
+        }
+
+        private static IEnumerable<GamesCollection> AddGamesCollections()
+        {
+            var gamesCollections = new List<GamesCollection>()
+            {
+                new GamesCollection()
+                {
+                    UserId = 1,
+                    GameId = 1
+                },
+                new GamesCollection()
+                {
+                    UserId = 1,
+                    GameId = 2
+                },
+                new GamesCollection()
+                {
+                    UserId = 1,
+                    GameId = 3
+                },
+                new GamesCollection()
+                {
+                    UserId = 2,
+                    GameId = 1
+                },
+                new GamesCollection()
+                {
+                    UserId = 3,
+                    GameId = 1
+                },
+                new GamesCollection()
+                {
+                    UserId = 3,
+                    GameId = 2
+                },
+                new GamesCollection()
+                {
+                    UserId = 4,
+                    GameId = 4
+                },
+                new GamesCollection()
+                {
+                    UserId = 4,
+                    GameId = 2
+                },
+                new GamesCollection()
+                {
+                    UserId = 3,
+                    GameId = 3
+                }
+            };
+
+            return gamesCollections;
+        }
+
+        private static IEnumerable<Follow> AddFollows()
+        {
+            var follows = new List<Follow>()
+            {
+                new Follow()
+                {
+                    UserId = 1,
+                    FollowerId = 2
+                },
+                new Follow()
+                {
+                    UserId = 1,
+                    FollowerId = 4
+                },
+                new Follow()
+                {
+                    UserId = 2,
+                    FollowerId = 1
+                },
+                new Follow()
+                {
+                    UserId = 2,
+                    FollowerId = 4
+                },
+                new Follow()
+                {
+                    UserId = 3,
+                    FollowerId = 1
+                },
+                new Follow()
+                {
+                    UserId = 4,
+                    FollowerId = 3
+                },
+            };
+
+            return follows;
         }
     }
 }
