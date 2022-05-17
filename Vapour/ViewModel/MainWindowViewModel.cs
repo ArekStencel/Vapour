@@ -18,6 +18,7 @@ namespace Vapour.ViewModel
         public IAuthenticator Authenticator { get; }
         public INavigator Navigator { get; set; }
         public ICommand UpdateCurrentViewModelCommand { get; }
+        public ICommand LogoutCommand { get; }
 
         public MainWindowViewModel(INavigator navigator, IAuthenticator authenticator, IRootViewModelFactory viewModelFactory, VapourDatabaseEntities dataContext)
         {
@@ -26,7 +27,8 @@ namespace Vapour.ViewModel
             Authenticator = authenticator;
             Navigator = navigator;
 
-            UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator, _viewModelFactory);
+            UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(Navigator, _viewModelFactory);
+            LogoutCommand = new LogoutCommand(Navigator, _viewModelFactory, Authenticator);
 
             UpdateCurrentViewModelCommand.Execute(ViewType.Login);
         }

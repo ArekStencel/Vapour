@@ -98,6 +98,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Command\LoginCommand.cs" />
+    <Compile Include="Command\LogoutCommand.cs" />
     <Compile Include="Command\UpdateCurrentViewModelCommand.cs" />
     <Compile Include="Exception\InvalidPasswordException.cs" />
     <Compile Include="Exception\UserNotFoundException.cs" />
