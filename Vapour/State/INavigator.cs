@@ -6,6 +6,5 @@ namespace Vapour.State
     public interface INavigator
     {
         BaseViewModel CurrentViewModel { get; set; }
-        ICommand UpdateCurrentViewModelCommand { get; }
     }
 }   

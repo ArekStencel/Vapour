@@ -14,11 +14,13 @@ namespace Vapour.Command
         public event EventHandler CanExecuteChanged;
 
         private readonly IAuthenticator _authenticator;
+        private readonly INavigator _navigator;
         private readonly LoginViewModel _loginViewModel;
 
-        public LoginCommand(LoginViewModel loginViewModel, IAuthenticator authenticator)
+        public LoginCommand(LoginViewModel loginViewModel, IAuthenticator authenticator, INavigator navigator)
         {
             _authenticator = authenticator;
+            _navigator = navigator;
             _loginViewModel = loginViewModel;
         }
 
@@ -30,6 +32,11 @@ namespace Vapour.Command
         public async void Execute(object parameter)
         {
             var success = await _authenticator.Login(_loginViewModel.Email, parameter.ToString());
+
+            if (success)
+            {
+                _navigator.CurrentViewModel = new LibraryViewModel();
+            }
         }
     }
 }

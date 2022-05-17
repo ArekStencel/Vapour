@@ -5,28 +5,57 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Vapour.View"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+             d:DesignHeight="450" d:DesignWidth="800"
+             FontSize="24">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+    <Border HorizontalAlignment="Center" BorderBrush="CadetBlue" CornerRadius="10" 
+            BorderThickness="3" Padding="25" Margin="25" VerticalAlignment="Center">
+        <Grid Grid.IsSharedSizeScope="True">
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <TextBlock Text="Email: " Grid.Row="0" Grid.Column="0" />
-        <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" />
+            <TextBlock Grid.Row="0" Text="Vapour" 
+                       FontSize="48" HorizontalAlignment="Center"/>
 
-        <TextBlock Text="Hasło: " Grid.Row="1" Grid.Column="0" />
-        <PasswordBox x:Name="pbPassword" Grid.Row="1" Grid.Column="1" />
+            <TextBlock Grid.Row="1" Text="The greatest game platform" 
+                       FontSize="24" HorizontalAlignment="Center" FontWeight="Thin"/>
 
-        <Button Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center"
-                Click="Login_Click" Content="Zaloguj się" />
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-    </Grid>
+                <Grid Grid.Row="0" Margin="0 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition SharedSizeGroup="Label" Width="Auto" />
+                        <ColumnDefinition Width="300" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Email: " Grid.Column="0" />
+                    <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="20 0 0 0" />
+                </Grid>
+
+                <Grid Grid.Row="1" Margin="0 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition SharedSizeGroup="Label" Width="Auto" />
+                        <ColumnDefinition Width="300" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Hasło: " Grid.Column="0" />
+                    <PasswordBox x:Name="pbPassword" Grid.Column="1" Margin="20 0 0 0" />
+                </Grid>
+
+                <Button Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" IsDefault="True"
+                        Click="Login_Click" Content="Zaloguj się" Margin="0 10"/>
+            </Grid>
+
+        </Grid>
+    </Border>
+
 </UserControl>

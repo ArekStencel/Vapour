@@ -24,7 +24,6 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- UpdateCurrentViewModel <-> UpdateCurrentViewModelCommand -->
             <RadioButton Grid.Column="0" Content="Library" Command="{Binding UpdateCurrentViewModelCommand}" 
                          CommandParameter="{x:Static nav:ViewType.Library}"/>
 
