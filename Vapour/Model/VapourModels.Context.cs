@@ -7,6 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using Vapour.Database;
+
 namespace Vapour.Model
 {
     using System;

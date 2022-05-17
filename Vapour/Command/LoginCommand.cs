@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Vapour.Model;
 using Vapour.State;
 using Vapour.ViewModel;
 
@@ -15,12 +16,14 @@ namespace Vapour.Command
 
         private readonly IAuthenticator _authenticator;
         private readonly INavigator _navigator;
+        private readonly VapourDatabaseEntities _dataContext;
         private readonly LoginViewModel _loginViewModel;
 
-        public LoginCommand(LoginViewModel loginViewModel, IAuthenticator authenticator, INavigator navigator)
+        public LoginCommand(LoginViewModel loginViewModel, IAuthenticator authenticator, INavigator navigator, VapourDatabaseEntities dataContext)
         {
             _authenticator = authenticator;
             _navigator = navigator;
+            _dataContext = dataContext;
             _loginViewModel = loginViewModel;
         }
 
@@ -35,7 +38,7 @@ namespace Vapour.Command
 
             if (success)
             {
-                _navigator.CurrentViewModel = new LibraryViewModel();
+                _navigator.CurrentViewModel = new LibraryViewModel(_authenticator, _dataContext);
             }
         }
     }

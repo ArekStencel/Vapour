@@ -9,38 +9,32 @@ namespace Vapour.ViewModel
 {
     public class StoreViewModel : BaseViewModel
     {
-        private readonly VapourDatabaseEntities _data = new VapourDatabaseEntities();
+        private readonly VapourDatabaseEntities _dataContext;
 
-        private string _user;
-        public string User
+        private List<string> _games = new List<string>();
+        public List<string> Games
         {
-            get => _user;
+            get => _games;
             set
             {
-                _user = value;
-                OnPropertyChanged(nameof(User));
+                _games = value;
+                OnPropertyChanged(nameof(Games));
             }
         }
 
-        private List<string> _users = new List<string>();
-
-        public List<string> Users
+        private void GetAllGames()
         {
-            get => _users;
-            set
+            var games = _dataContext.Games.ToList();
+            foreach (var game in games.Where(user => _games != null))
             {
-                _users = value;
-                OnPropertyChanged(nameof(Users));
+                _games.Add(game.ToString());
             }
         }
 
-        public StoreViewModel()
+        public StoreViewModel(VapourDatabaseEntities dataContext)
         {
-            var users = _data.Users.ToList();
-            foreach (var user in users.Where(user => _users != null))
-            {
-                _users.Add(user.ToString());
-            }
+            _dataContext = dataContext;
+            GetAllGames();
         }
     }
 }

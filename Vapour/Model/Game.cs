@@ -7,6 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Text;
+
 namespace Vapour.Model
 {
     using System;
@@ -28,7 +30,19 @@ namespace Vapour.Model
         public string Description { get; set; }
         public System.DateTime ReleaseDate { get; set; }
         public int GenreId { get; set; }
-    
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder()
+                .Append(Title)
+                .Append("Cena: ")
+                .Append(Price)
+                .Append("z³, opis: ")
+                .Append(Description);
+
+            return sb.ToString();
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual Genre Genre { get; set; }

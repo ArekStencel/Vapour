@@ -23,14 +23,11 @@ namespace Vapour
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            var dataContext = new VapourDatabaseEntities();
+            var serviceProvider = CreateServiceProvider();
+
+            var dataContext = serviceProvider.GetRequiredService<VapourDatabaseEntities>();
             var seeder = new DataSeeder(dataContext);
             seeder.Seed();
-
-            var serviceProvider = CreateServiceProvider();
-            var authentication = serviceProvider.GetRequiredService<IAuthenticationService>();
-            authentication.Register("", "piesio", "", "");
-            // var loggedUser = authentication.Login("dobrypiesio@interia.pl", "dobrypiesio");
 
             var window = serviceProvider.GetRequiredService<MainWindow>();
             window.Show();
@@ -55,6 +52,7 @@ namespace Vapour
             services.AddScoped<IAuthenticator, Authenticator>();
 
             services.AddScoped<MainWindowViewModel>();
+            services.AddScoped<VapourDatabaseEntities>();
 
             services.AddScoped<MainWindow>(s => new MainWindow(s.GetRequiredService<MainWindowViewModel>()));
 

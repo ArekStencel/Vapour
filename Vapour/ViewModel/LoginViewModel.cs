@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Vapour.Command;
+using Vapour.Model;
 using Vapour.State;
 
 namespace Vapour.ViewModel
@@ -24,9 +25,9 @@ namespace Vapour.ViewModel
 
         public ICommand LoginCommand { get; }
 
-        public LoginViewModel(IAuthenticator authenticator, INavigator navigator)
+        public LoginViewModel(IAuthenticator authenticator, INavigator navigator, VapourDatabaseEntities dataContext)
         {
-            LoginCommand = new LoginCommand(this, authenticator, navigator);
+            LoginCommand = new LoginCommand(this, authenticator, navigator, dataContext);
         }
     }
 }
