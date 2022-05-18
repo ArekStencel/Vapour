@@ -36,7 +36,7 @@
                     <Grid.Resources>
                         <Style BasedOn="{StaticResource LoginButton}" TargetType="Button" />
                         <Style BasedOn="{StaticResource LoginInput}" TargetType="TextBox"/>
-                        <!-- <Style BasedOn="{StaticResource LoginPasswordBox}" TargetType="PasswordBox"/> -->
+                        <Style BasedOn="{StaticResource LoginPasswordBox}" TargetType="PasswordBox"/>
                     </Grid.Resources>
 
                     <Grid.RowDefinitions>
