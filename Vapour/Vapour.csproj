@@ -136,6 +136,10 @@
     <Compile Include="View\StoreView.xaml.cs">
       <DependentUpon>StoreView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Style\ColorPalette.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\CommunityView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -247,10 +251,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Assets\" />
-  </ItemGroup>
-  <ItemGroup>
+    <Resource Include="Assets\bg.jpg" />
     <Content Include="Database\VapourDatabase.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

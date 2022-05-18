@@ -1,0 +1,106 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="Color1">#121515</Color>
+    <Color x:Key="Color2">#2b2c28</Color>
+    <Color x:Key="Color3">#339989</Color>
+    <Color x:Key="Color4">#7de2d1</Color>
+    <Color x:Key="Color5">#fffafb</Color>
+
+    <SolidColorBrush x:Key="BrushColor1" Color="{StaticResource Color1}" />
+    <SolidColorBrush x:Key="BrushColor2" Color="{StaticResource Color2}" />
+    <SolidColorBrush x:Key="BrushColor3" Color="{StaticResource Color3}" />
+    <SolidColorBrush x:Key="BrushColor4" Color="{StaticResource Color4}" />
+    <SolidColorBrush x:Key="BrushColor5" Color="{StaticResource Color5}" />
+
+    <Style x:Key="LoginInput" TargetType="TextBox">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                    <Border CornerRadius="12" Padding="2" Background="{StaticResource BrushColor5}"
+                            BorderBrush="{StaticResource BrushColor2}" BorderThickness="3">
+                        <ScrollViewer Margin="0" x:Name="PART_ContentHost" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="LoginPasswordBox" TargetType="PasswordBox">
+        <Setter Property="Margin" Value="20 0 0 0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                    <Border CornerRadius="12" Padding="2" Background="{StaticResource BrushColor5}"
+                            BorderBrush="{StaticResource BrushColor2}" BorderThickness="3">
+                        <ScrollViewer Margin="0" x:Name="PART_ContentHost" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="LoginButton" TargetType="Button">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Padding" Value="10 5"/>
+        <Setter Property="Margin" Value="0 20 0 0" />
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Background" Value="{StaticResource BrushColor2}"/>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="MouseEnter">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation To="{StaticResource Color3}" Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="MouseLeave">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation To="{StaticResource Color2}" Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="NavButton" TargetType="RadioButton">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Padding" Value="10 5"/>
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Background" Value="{StaticResource BrushColor2}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Grid x:Name="gridMain" Background="{TemplateBinding Background}">
+                        <TextBlock Text="{TemplateBinding Content}" 
+                                   Padding="{TemplateBinding Padding}"
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Background" Value="{StaticResource BrushColor3}" TargetName="gridMain"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="MouseEnter">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation To="{StaticResource Color1}" Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="MouseLeave">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation To="{StaticResource Color2}" Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
+    
+</ResourceDictionary>

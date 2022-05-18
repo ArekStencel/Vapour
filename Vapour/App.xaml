@@ -7,22 +7,28 @@
     <!-- StartupUri="View/MainWindowView.xaml"> -->
 
     <Application.Resources>
-        
-        <DataTemplate DataType="{x:Type viewmodel:LibraryViewModel}">
-            <view:LibraryView />
-        </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodel:StoreViewModel}">
-            <view:StoreView />
-        </DataTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Style/ColorPalette.xaml" />
+            </ResourceDictionary.MergedDictionaries>
 
-        <DataTemplate DataType="{x:Type viewmodel:CommunityViewModel}">
-            <view:CommunityView />
-        </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodel:LibraryViewModel}">
+                <view:LibraryView />
+            </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodel:LoginViewModel}">
-            <view:LoginView LoginCommand="{Binding LoginCommand}"/>
-        </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodel:StoreViewModel}">
+                <view:StoreView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodel:CommunityViewModel}">
+                <view:CommunityView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodel:LoginViewModel}">
+                <view:LoginView LoginCommand="{Binding LoginCommand}"/>
+            </DataTemplate>
+        </ResourceDictionary>
 
     </Application.Resources>
 </Application>

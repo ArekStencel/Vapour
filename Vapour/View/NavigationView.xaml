@@ -13,28 +13,38 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Vapour" />
+        <Grid Grid.Row="0" Background="{StaticResource BrushColor2}">
+            <TextBlock Grid.Row="0" Text="Vapour" Foreground="{StaticResource BrushColor5}"
+                       FontSize="38" Padding="10" FontWeight="Bold"/>
+        </Grid>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1"
+              Background="{StaticResource BrushColor2}">
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+            <Grid MaxWidth="1000">
+                <Grid.Resources>
+                    <Style BasedOn="{StaticResource NavButton}" TargetType="RadioButton"/>
+                </Grid.Resources>
 
-            <RadioButton Grid.Column="0" Content="Library" Command="{Binding UpdateCurrentViewModelCommand}" 
-                         CommandParameter="{x:Static nav:ViewType.Library}"/>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-            <RadioButton Grid.Column="1" Content="Store" Command="{Binding UpdateCurrentViewModelCommand}"
-                         CommandParameter="{x:Static nav:ViewType.Store}"/>
+                <RadioButton Grid.Column="0" Content="Library" Command="{Binding UpdateCurrentViewModelCommand}" 
+                             CommandParameter="{x:Static nav:ViewType.Library}"/>
 
-            <RadioButton Grid.Column="2" Content="Community" Command="{Binding UpdateCurrentViewModelCommand}"
-                         CommandParameter="{x:Static nav:ViewType.Community}"/>
+                <RadioButton Grid.Column="1" Content="Store" Command="{Binding UpdateCurrentViewModelCommand}"
+                             CommandParameter="{x:Static nav:ViewType.Store}"/>
 
-            <RadioButton Grid.Column="3" Content="Wyloguj się" Command="{Binding LogoutCommand}" />
+                <RadioButton Grid.Column="2" Content="Community" Command="{Binding UpdateCurrentViewModelCommand}"
+                             CommandParameter="{x:Static nav:ViewType.Community}"/>
+
+                <RadioButton Grid.Column="4" Content="Wyloguj się" Command="{Binding LogoutCommand}" />
+            </Grid>
 
         </Grid>
 
