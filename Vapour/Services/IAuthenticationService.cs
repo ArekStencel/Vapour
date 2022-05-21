@@ -8,9 +8,9 @@ using Vapour.State;
 
 namespace Vapour.Services
 {
-    public interface IAuthenticationService
+    public interface IAuthenticationService 
     {
-        Task<RegistrationResult> Register(string email, string username, string password, string confirmPassword, int roleId = 2);
+        Task<RegistrationResult> Register(string email, string username, string password, string confirmPassword, string description, int roleId = 2, decimal walletBalance = 0);
         Task<User> Login(string email, string password);
     }
 }

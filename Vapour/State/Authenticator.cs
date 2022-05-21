@@ -28,9 +28,9 @@ namespace Vapour.State
         }
 
         public bool IsLoggedIn => CurrentUser != null;
-        public async Task<RegistrationResult> Register(string email, string username, string password, string confirmPassword, int roleId)
+        public async Task<RegistrationResult> Register(string email, string username, string password, string confirmPassword, string description, int roleId, decimal walletBalance)
         {
-            return await _authenticationService.Register(email, username, password, confirmPassword, roleId);
+            return await _authenticationService.Register(email, username, password, confirmPassword, description, roleId, walletBalance);
         }
 
         public async Task<bool> Login(string email, string password)

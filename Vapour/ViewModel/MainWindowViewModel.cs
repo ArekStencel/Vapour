@@ -15,10 +15,12 @@ namespace Vapour.ViewModel
     {
         private readonly IRootViewModelFactory _viewModelFactory;
         private readonly VapourDatabaseEntities _dataContext;
+
         public IAuthenticator Authenticator { get; }
         public INavigator Navigator { get; set; }
         public ICommand UpdateCurrentViewModelCommand { get; }
         public ICommand LogoutCommand { get; }
+        public ICommand NavigateToRegisterFormCommand { get; }
 
         public MainWindowViewModel(INavigator navigator, IAuthenticator authenticator, IRootViewModelFactory viewModelFactory, VapourDatabaseEntities dataContext)
         {
@@ -29,6 +31,7 @@ namespace Vapour.ViewModel
 
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(Navigator, _viewModelFactory);
             LogoutCommand = new LogoutCommand(Navigator, _viewModelFactory, Authenticator);
+            NavigateToRegisterFormCommand = new NavigateToRegisterFormCommand(Navigator, Authenticator, _dataContext);
 
             UpdateCurrentViewModelCommand.Execute(ViewType.Login);
         }

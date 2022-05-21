@@ -1,15 +1,11 @@
-﻿<UserControl x:Class="Vapour.View.LoginView"
+﻿<UserControl x:Class="Vapour.View.RegisterView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:local="clr-namespace:Vapour.View"
-             xmlns:nav="clr-namespace:Vapour.State"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             FontSize="24">
-
+             d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Background>
         <ImageBrush 
             ImageSource="/Assets/bg.jpg"
@@ -26,11 +22,11 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="Vapour" Foreground="{StaticResource BrushColor5}"
-                       FontSize="48" HorizontalAlignment="Center" FontWeight="Bold"/>
+            <TextBlock Grid.Row="0" Text="Zarejestruj się" Foreground="{StaticResource BrushColor5}"
+                       FontSize="32" HorizontalAlignment="Center" FontWeight="Bold" />
 
-            <TextBlock Grid.Row="1" Text="The greatest game platform" 
-                       FontSize="24" HorizontalAlignment="Center" FontWeight="Thin" Margin="0 5 0 20"/>
+            <TextBlock Grid.Row="1" Text="Stwórz konto za darmo i graj!" 
+                       FontSize="18" HorizontalAlignment="Center" FontWeight="Thin" Margin="0 5 0 10"/>
 
             <Grid Grid.Row="2" >
 
@@ -42,6 +38,8 @@
                     </Grid.Resources>
 
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -69,15 +67,39 @@
                                          Background="{StaticResource BrushColor5}"/>
                     </Grid>
 
-                    <Button Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" IsDefault="True"
-                                Click="Login_Click" Content="Zaloguj się" />
+                    <Grid Grid.Row="2" Margin="0 10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="Label" Width="Auto" />
+                            <ColumnDefinition Width="300" />
+                        </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Row="3" Text="Nie masz konta? Zarejestruj się!" Foreground="Blue" 
-                               HorizontalAlignment="Center" Margin="0 20 0 0" FontSize="18">
-                        <TextBlock.InputBindings>
-                            <MouseBinding Command="{Binding NavigateToRegisterFormCommand}" MouseAction="LeftClick" />
-                        </TextBlock.InputBindings>
-                    </TextBlock>
+                        <TextBlock Text="Powtórz hasło: " Grid.Column="0" />
+                        <PasswordBox x:Name="pbPasswordConfirm" Grid.Column="1" Margin="20 0 0 0" 
+                                     Background="{StaticResource BrushColor5}"/>
+                    </Grid>
+
+                    <Grid Grid.Row="3" Margin="0 10" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="Label" Width="Auto" />
+                            <ColumnDefinition Width="300" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Nazwa użytkownika: " Grid.Column="0" />
+                        <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="20 0 0 0" />
+                    </Grid>
+
+                    <Grid Grid.Row="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0" HorizontalAlignment="Center" IsDefault="True"
+                                Click="Register_Click" Content="Wróć" />
+
+                        <Button Grid.Column="1" HorizontalAlignment="Center" IsDefault="True"
+                                Click="Register_Click" Content="Zarejestruj się" />
+                    </Grid>
 
                 </Grid>
 
@@ -85,5 +107,4 @@
 
         </Grid>
     </Border>
-
 </UserControl>

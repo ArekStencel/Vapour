@@ -62,6 +62,9 @@
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.6.0.0\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
     </Reference>
@@ -78,6 +81,9 @@
     <Reference Include="System.Security" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -99,6 +105,8 @@
     </ApplicationDefinition>
     <Compile Include="Command\LoginCommand.cs" />
     <Compile Include="Command\LogoutCommand.cs" />
+    <Compile Include="Command\NavigateToRegisterFormCommand.cs" />
+    <Compile Include="Command\RegisterCommand.cs" />
     <Compile Include="Command\UpdateCurrentViewModelCommand.cs" />
     <Compile Include="Exception\InvalidPasswordException.cs" />
     <Compile Include="Exception\UserNotFoundException.cs" />
@@ -116,10 +124,12 @@
     <Compile Include="ViewModel\Factories\IViewModelFactory.cs" />
     <Compile Include="ViewModel\Factories\LibraryViewModelFactory.cs" />
     <Compile Include="ViewModel\Factories\LoginViewModelFactory.cs" />
+    <Compile Include="ViewModel\Factories\RegisterViewModelFactory.cs" />
     <Compile Include="ViewModel\Factories\RootViewModelFactory.cs" />
     <Compile Include="ViewModel\Factories\StoreViewModelFactory.cs" />
     <Compile Include="ViewModel\LibraryViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
+    <Compile Include="ViewModel\RegisterViewModel.cs" />
     <Compile Include="ViewModel\StoreViewModel.cs" />
     <Compile Include="View\CommunityView.xaml.cs">
       <DependentUpon>CommunityView.xaml</DependentUpon>
@@ -132,6 +142,9 @@
     </Compile>
     <Compile Include="View\NavigationView.xaml.cs">
       <DependentUpon>NavigationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RegisterView.xaml.cs">
+      <DependentUpon>RegisterView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\StoreView.xaml.cs">
       <DependentUpon>StoreView.xaml</DependentUpon>
@@ -209,6 +222,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\NavigationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\RegisterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

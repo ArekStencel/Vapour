@@ -16,7 +16,7 @@ namespace Vapour.Services
             // _data = data;
         // }
 
-        public Task<RegistrationResult> Register(string email, string username, string password, string confirmPassword, int roleId = 2)
+        public Task<RegistrationResult> Register(string email, string username, string password, string confirmPassword, string description, int roleId = 2, decimal walletBalance = 0)
         {
             var result = RegistrationResult.Success;
 

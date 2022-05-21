@@ -8,7 +8,7 @@ namespace Vapour.State
     {
         User CurrentUser { get; }
         bool IsLoggedIn { get; }
-        Task<RegistrationResult> Register(string email, string username, string password, string confirmPassword, int roleId);
+        Task<RegistrationResult> Register(string email, string username, string password, string confirmPassword, string description, int roleId, decimal walletBalance);
         Task<bool> Login(string email, string password);
         void Logout();
     }
