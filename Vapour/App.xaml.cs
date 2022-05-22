@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Authentication.ExtendedProtection;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.AspNet.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Vapour.Database;
 using Vapour.Model;
@@ -46,8 +47,7 @@ namespace Vapour
             services.AddSingleton<IViewModelFactory<StoreViewModel>, StoreViewModelFactory>();
             services.AddSingleton<IViewModelFactory<LoginViewModel>, LoginViewModelFactory>();
             services.AddSingleton<IViewModelFactory<RegisterViewModel>, RegisterViewModelFactory>();
-            // todo add passwordhasher
-            // services.AddSingleton<IPasswordHasher, PasswordHasher>();
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
             services.AddScoped<INavigator, Navigator>();
             services.AddScoped<IAuthenticator, Authenticator>();

@@ -104,7 +104,7 @@ namespace Vapour.Database
                 {
                     Name = "Patryk",
                     Email = "patryk@test.pl",
-                    Password = "haslo",
+                    Password = "AJUJI40TXwnwB84pQXW7xXQizUwx6jSwfPWwbhR/G2OPOjTeCNQu12IHabvFOebKkA==",
                     WalletBalance = 2115,
                     RoleId = 1,
                     Description = "opis"
@@ -113,7 +113,7 @@ namespace Vapour.Database
                 {
                     Name = "Mariusz",
                     Email = "mariusz@test.pl",
-                    Password = "haslo",
+                    Password = "AJUJI40TXwnwB84pQXW7xXQizUwx6jSwfPWwbhR/G2OPOjTeCNQu12IHabvFOebKkA==",
                     WalletBalance = 420,
                     RoleId = 1,
                     Description = "mariano italiano"
@@ -122,7 +122,7 @@ namespace Vapour.Database
                 {
                     Name = "Arek",
                     Email = "arek@test.pl",
-                    Password = "haslo",
+                    Password = "AJUJI40TXwnwB84pQXW7xXQizUwx6jSwfPWwbhR/G2OPOjTeCNQu12IHabvFOebKkA==",
                     WalletBalance = 2137,
                     RoleId = 2,
                     Description = "arek"
@@ -131,10 +131,19 @@ namespace Vapour.Database
                 {
                     Name = "Dawid",
                     Email = "dawid@test.pl",
-                    Password = "haslo",
+                    Password = "AJUJI40TXwnwB84pQXW7xXQizUwx6jSwfPWwbhR/G2OPOjTeCNQu12IHabvFOebKkA==",
                     WalletBalance = 69,
                     RoleId = 2,
                     Description = "opis"
+                },
+                new User()
+                {
+                    Name = "test",
+                    Email = "test@test.pl",
+                    Password = "haslo",
+                    WalletBalance = 123456,
+                    RoleId = 2,
+                    Description = "bez opisu"
                 }
             };
 

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.AspNet.Identity;
 using Vapour.Exceptions;
 using Vapour.Model;
 using Vapour.State;
@@ -12,7 +13,13 @@ namespace Vapour.Services
 {
     public class AuthenticationService : IAuthenticationService
     {
+        private readonly IPasswordHasher _passwordHasher;
         private readonly VapourDatabaseEntities _data = new VapourDatabaseEntities();
+
+        public AuthenticationService(IPasswordHasher passwordHasher)
+        {
+            _passwordHasher = passwordHasher;
+        }
 
         public Task<RegistrationResult> Register(string email, string username, string password, string confirmPassword, 
             string description, int roleId = 2, decimal walletBalance = 0)
@@ -55,13 +62,13 @@ namespace Vapour.Services
 
             if (result == RegistrationResult.Success)
             {
-                // string hashedPassword = _passwordHasher.HashPassword(password);
+                var hashedPassword = _passwordHasher.HashPassword(password);
 
                 var newUser = new User()
                 {
                     Email = email,
                     Name = username,
-                    Password = password, // hashedPassword,
+                    Password = hashedPassword,
                     RoleId = roleId,
                 };
 
@@ -74,21 +81,15 @@ namespace Vapour.Services
 
         public async Task<User> Login(string email, string password)
         {
-            var storedAccount = _data.Users.First(u => u.Email.Equals(email)); // await _accountService.GetByUsername(username);
+            var storedAccount = _data.Users.First(u => u.Email.Equals(email)); 
 
             if (storedAccount == null)
             {
                 throw new UserNotFoundException(email);
             }
-
-            var passwordResult = storedAccount.Password.Equals(password); // _passwordHasher.VerifyHashedPassword(storedAccount.AccountHolder.PasswordHash, password);
-
-            // if (passwordResult != PasswordVerificationResult.Success)
-            // {
-            //     throw new InvalidPasswordException(username, password);
-            // }
-
-            if (passwordResult == false)
+            
+            var passwordResult = _passwordHasher.VerifyHashedPassword(storedAccount.Password, password);
+            if (passwordResult != PasswordVerificationResult.Success)
             {
                 throw new InvalidPasswordException(email, password);
             }
