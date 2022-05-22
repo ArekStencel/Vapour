@@ -110,6 +110,7 @@
     <Compile Include="Command\UpdateCurrentViewModelCommand.cs" />
     <Compile Include="Exception\InvalidPasswordException.cs" />
     <Compile Include="Exception\UserNotFoundException.cs" />
+    <Compile Include="Model\Dto\RegisterUserDto.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\IAuthenticationService.cs" />
     <Compile Include="State\Authenticator.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="State\Navigator.cs" />
     <Compile Include="State\RegistrationResult.cs" />
     <Compile Include="State\ViewType.cs" />
+    <Compile Include="Utilities\RegexUtilities.cs" />
     <Compile Include="ViewModel\CommunityViewModel.cs" />
     <Compile Include="ViewModel\Factories\CommunityViewModelFactory.cs" />
     <Compile Include="ViewModel\Factories\IRootViewModelFactory.cs" />

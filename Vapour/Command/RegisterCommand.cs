@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using Vapour.Model;
+using Vapour.Model.Dto;
 using Vapour.State;
 using Vapour.View;
 using Vapour.ViewModel;
@@ -27,9 +29,17 @@ namespace Vapour.Command
             return true;
         }
 
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
-            Console.WriteLine("register command");
+            var newUserDto = (RegisterUserDto) parameter;
+
+            var result = await _authenticator.Register(newUserDto.Email, newUserDto.Name, newUserDto.Password,
+                newUserDto.PasswordConfirm, newUserDto.Description, newUserDto.RoleId, newUserDto.WalletBalance);
+
+            if (result == RegistrationResult.Success)
+            {
+                _navigator.CurrentViewModel = new LoginViewModel(_authenticator, _navigator, _dataContext);
+            }
         }
 
         public event EventHandler CanExecuteChanged;

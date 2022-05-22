@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Vapour.Command;
+using Vapour.Model.Dto;
 
 namespace Vapour.View
 {
@@ -25,20 +27,28 @@ namespace Vapour.View
             InitializeComponent();
         }
 
-        public ICommand RegisterFormCommand
+        public ICommand RegisterCommand
         {
-            get => (ICommand)GetValue(RegisterFormCommandProperty);
-            set => SetValue(RegisterFormCommandProperty, value);
+            get => (ICommand)GetValue(RegisterCommandProperty);
+            set => SetValue(RegisterCommandProperty, value);
         }
 
-        public static readonly DependencyProperty RegisterFormCommandProperty =
-            DependencyProperty.Register("RegisterFormCommand", typeof(ICommand), typeof(RegisterView), new PropertyMetadata(null));
+        public static readonly DependencyProperty RegisterCommandProperty =
+            DependencyProperty.Register(nameof(RegisterCommand), typeof(ICommand), typeof(RegisterView), new PropertyMetadata(null));
 
         private void Register_Click(object sender, RoutedEventArgs e)
         {
-            if (RegisterFormCommand != null)
+            if (RegisterCommand != null)
             {
-                // RegisterFormCommand.Execute();
+                var newUserDto = new RegisterUserDto()
+                {
+                    Email = Email.Text,
+                    Password = pbPassword.Password,
+                    PasswordConfirm = pbPasswordConfirm.Password,
+                    Name = Name.Text    
+                };
+
+                RegisterCommand.Execute(newUserDto);
             }
         }
 

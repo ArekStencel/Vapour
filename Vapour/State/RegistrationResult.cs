@@ -11,5 +11,8 @@ namespace Vapour.State
         Success,
         PasswordsDoNotMatch,
         EmailAlreadyExists,
+        IncorrectEmail,
+        WeakPassword,
+        IncorrectName
     }
 }

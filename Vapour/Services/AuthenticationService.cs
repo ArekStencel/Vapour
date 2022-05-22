@@ -1,9 +1,12 @@
 ﻿using System.CodeDom;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 using Vapour.Exceptions;
 using Vapour.Model;
 using Vapour.State;
+using Vapour.Utilities;
 
 namespace Vapour.Services
 {
@@ -11,18 +14,24 @@ namespace Vapour.Services
     {
         private readonly VapourDatabaseEntities _data = new VapourDatabaseEntities();
 
-        // public AuthenticationService(VapourDatabaseEntities data)
-        // {
-            // _data = data;
-        // }
-
-        public Task<RegistrationResult> Register(string email, string username, string password, string confirmPassword, string description, int roleId = 2, decimal walletBalance = 0)
+        public Task<RegistrationResult> Register(string email, string username, string password, string confirmPassword, 
+            string description, int roleId = 2, decimal walletBalance = 0)
         {
             var result = RegistrationResult.Success;
 
             if (password != confirmPassword)
             {
                 result = RegistrationResult.PasswordsDoNotMatch;
+            }
+
+            if (password.Length < 8)
+            {
+                result = RegistrationResult.WeakPassword;
+            }
+
+            if (!RegexUtilities.IsValidEmail(email))
+            {
+                result = RegistrationResult.IncorrectEmail;
             }
 
             var emailAccount = false;
@@ -37,6 +46,11 @@ namespace Vapour.Services
             if (emailAccount)
             {
                 result = RegistrationResult.EmailAlreadyExists;
+            }
+
+            if (username.Length < 3)
+            {
+                result = RegistrationResult.IncorrectName;
             }
 
             if (result == RegistrationResult.Success)

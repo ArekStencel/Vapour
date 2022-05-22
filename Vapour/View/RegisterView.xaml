@@ -53,7 +53,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Text="Email: " Grid.Column="0" />
-                        <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="20 0 0 0" />
+                        <TextBox x:Name="Email" Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="20 0 0 0" />
                     </Grid>
 
                     <Grid Grid.Row="1" Margin="0 10">
@@ -85,7 +85,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Text="Nazwa użytkownika: " Grid.Column="0" />
-                        <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="20 0 0 0" />
+                        <TextBox x:Name="Name" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="20 0 0 0" />
                     </Grid>
 
                     <Grid Grid.Row="4">
@@ -95,7 +95,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Button Grid.Column="0" HorizontalAlignment="Center" IsDefault="True"
-                                Click="Register_Click" Content="Wróć" />
+                                Command="{Binding Path=NavigateToLoginFormCommand}" Content="Wróć" />
 
                         <Button Grid.Column="1" HorizontalAlignment="Center" IsDefault="True"
                                 Click="Register_Click" Content="Zarejestruj się" />

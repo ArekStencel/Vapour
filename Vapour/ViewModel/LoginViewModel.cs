@@ -27,11 +27,11 @@ namespace Vapour.ViewModel
 
         public ICommand NavigateToRegisterFormCommand { get; }
 
-
         public LoginViewModel(IAuthenticator authenticator, INavigator navigator, VapourDatabaseEntities dataContext)
         {
             LoginCommand = new LoginCommand(this, authenticator, navigator, dataContext);
             NavigateToRegisterFormCommand = new NavigateToRegisterFormCommand(navigator, authenticator, dataContext);
         }
+
     }
 }

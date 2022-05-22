@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Vapour.Command;
 using Vapour.Model;
@@ -32,7 +33,7 @@ namespace Vapour.ViewModel
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(Navigator, _viewModelFactory);
             LogoutCommand = new LogoutCommand(Navigator, _viewModelFactory, Authenticator);
             NavigateToRegisterFormCommand = new NavigateToRegisterFormCommand(Navigator, Authenticator, _dataContext);
-
+            
             UpdateCurrentViewModelCommand.Execute(ViewType.Login);
         }
     }
