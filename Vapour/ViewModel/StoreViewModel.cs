@@ -36,7 +36,7 @@ namespace Vapour.ViewModel
                 Genre = value.Genre.Name;
                 Description = value.Description;
                 ReleaseDate = value.ReleaseDate.ToString();
-                AverageRate = GetAverageRate();
+                AverageRate = GetAverageRate(value.Id);
 
                 OnPropertyChanged(nameof(SelectedGame));
             }
@@ -108,10 +108,32 @@ namespace Vapour.ViewModel
             }
         }
 
-        private string GetAverageRate()
+        private string GetAverageRate(int id)
         {
+            if (_dataContext.Rates.Any(r => r.GameId == id) == false)
+            {
+                return "NA";
+            }
 
-            return 0.ToString();
+            //return _dataContext.Rates
+            //    .Where(r => r.GameId == id)
+            //    .GroupBy(r => r.GameId)
+            //    .Select(r => r.Key)
+            //    .Average()
+            //    .ToString();
+
+            double SumRate = 0;
+            int howMany = 0;
+            foreach (var rate in _dataContext.Rates)
+            {
+                if (rate.GameId == id)
+                {
+                    SumRate += rate.Rate1;
+                    howMany++;
+                }
+            }
+
+            return (SumRate / howMany).ToString();
         }
 
         private void GetAllGames()
