@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Vapour.Model;
+using Vapour.State;
 
 namespace Vapour.ViewModel
 {
     public class StoreViewModel : BaseViewModel
     {
         private readonly VapourDatabaseEntities _dataContext;
+
+        private readonly IAuthenticator _authenticator;
 
         private List<string> _games = new List<string>();
         public List<string> Games
@@ -31,10 +34,13 @@ namespace Vapour.ViewModel
             }
         }
 
-        public StoreViewModel(VapourDatabaseEntities dataContext)
+        public StoreViewModel(VapourDatabaseEntities dataContext, IAuthenticator authenticator)
         {
             _dataContext = dataContext;
+            _authenticator = authenticator; 
             GetAllGames();
+
+
         }
     }
 }
