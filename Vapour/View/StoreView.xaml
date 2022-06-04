@@ -111,7 +111,7 @@
                         <TextBlock Text="{Binding AverageRate}" x:Name="AverageRate"  Grid.Column="1" Margin="20 0 0 0" />
                     </Grid>
 
-                    <Button Grid.Column="1" Grid.Row="2" Height="60" Width="120"/>
+                    <Button Grid.Column="1" Grid.Row="2" Grid.RowSpan="3" Height="60" Width="100"/>
                 </Grid>
 
             </Grid>
@@ -123,7 +123,8 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Text="Opis: " Grid.Column="0" />
-                <TextBlock Text="{Binding Description}" x:Name="Descryption" Grid.Column="1"  Margin="20 0 0 0" TextWrapping="Wrap" />
+                <TextBlock Text="{Binding Description}" x:Name="Descryption" Grid.Column="1"  
+                           Margin="20 0 0 0" TextWrapping="Wrap" />
             </Grid>
 
             <ListView Grid.Column="1" Grid.Row="2" ItemsSource="{Binding Comments}" 
@@ -146,14 +147,18 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition/>
+                                    <RowDefinition/>
                                 </Grid.RowDefinitions>
 
                                 <TextBlock Grid.Row="0" VerticalAlignment="Center" Padding="40 0 0 0">
-                            <Run Text="User: " FontSize="18"/>
                             <Run Text="{Binding User}" FontSize="18" />
                                 </TextBlock>
                                 <TextBlock Grid.Row="1" VerticalAlignment="Center" Padding="40 0 0 0">
-                            <Run Text="{Binding Text}"/>
+                            <Run Text="Dodano: " FontSize="10" FontStyle="Italic"/>
+                            <Run Text="{Binding Date}" FontSize="10" FontStyle="Italic"/>                                
+                                </TextBlock>
+                                <TextBlock Grid.Row="2" VerticalAlignment="Center" Padding="40 0 0 0" TextWrapping="Wrap">
+                            <Run Text="{Binding Text}" FontSize="14" />
                             </TextBlock>
                             </Grid>
                             
