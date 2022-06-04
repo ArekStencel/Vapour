@@ -8,6 +8,12 @@ using Vapour.State;
 
 namespace Vapour.ViewModel
 {
+    public class GameComments
+    {
+        public string User { get; set; }
+        public string Text { get; set; }
+        public string Date { get; set; }
+    }
     public class StoreViewModel : BaseViewModel
     {
         private readonly VapourDatabaseEntities _dataContext;
@@ -24,6 +30,17 @@ namespace Vapour.ViewModel
             }
         }
 
+        private List<GameComments> _comments = new List<GameComments>();
+        public List<GameComments> Comments
+        {
+            get => _comments;
+            set
+            {
+                _comments = value;
+                OnPropertyChanged(nameof(Comments));
+            }
+        }
+
         private Game _selectedGame;
         public Game SelectedGame
         {
@@ -35,8 +52,9 @@ namespace Vapour.ViewModel
                 Price = value.Price.ToString();
                 Genre = value.Genre.Name;
                 Description = value.Description;
-                ReleaseDate = value.ReleaseDate.ToString();
+                ReleaseDate = value.ReleaseDate.ToString("dd.MM.yyyy");
                 AverageRate = GetAverageRate(value.Id);
+                Comments = GetGameComments(value.Id);
 
                 OnPropertyChanged(nameof(SelectedGame));
             }
@@ -134,6 +152,30 @@ namespace Vapour.ViewModel
             }
 
             return (SumRate / howMany).ToString();
+        }
+
+        private List<GameComments> GetGameComments(int id)
+        {
+            var comments = _dataContext.Comments.ToList();
+            var gameComments = new List<GameComments>();
+
+            foreach (var comment in comments)
+            {
+                if (comment.GameId == id)
+                {
+                    Console.WriteLine(_dataContext.Users.Where(u => u.Id == comment.UserId).Select(u => u.Name).ToString());
+                    gameComments.Add(new GameComments() {
+                        //User = comment.UserId.ToString(),
+                        User = (from u in _dataContext.Users 
+                               where u.Id == comment.UserId
+                                select u.Name).First().ToString(),
+                        Text = comment.Text,
+                        Date = comment.CreatedAt.ToString()
+                    });;
+                }
+            }
+
+            return gameComments;
         }
 
         private void GetAllGames()

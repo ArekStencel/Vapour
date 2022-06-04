@@ -47,16 +47,17 @@
 
         <Grid Grid.Column="1" Margin="20">
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="3*"/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" >
 
-                <Grid>
+                <Grid >
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="1.2*"/>
+                        <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
 
                     <Grid.RowDefinitions>
@@ -87,7 +88,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Text="Gatunek: " Grid.Column="0" />
-                        <TextBlock Text="{Binding Genre}" x:Name="Gatunek"  Grid.Column="1" Margin="20 0 0 0" />
+                        <TextBlock Text="{Binding Genre}" x:Name="Gatunek"  Grid.Column="1" Margin="20 0 0 0" TextWrapping="Wrap" />
                     </Grid>
 
                     <Grid Grid.Row="3" Margin="0 10" >
@@ -96,21 +97,11 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="Opis: " Grid.Column="0" />
-                        <TextBlock Text="{Binding Description}" x:Name="Descryption"  Grid.Column="1" Margin="20 0 0 0" />
+                        <TextBlock Text="Data premiery: " Grid.Column="0" />
+                        <TextBlock Text="{Binding ReleaseDate}" x:Name="ReleasedDate"  Grid.Column="1" Margin="20 0 0 0" />
                     </Grid>
 
                     <Grid Grid.Row="4" Margin="0 10" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Text="Data premiery: " Grid.Column="0" />
-                        <TextBlock Text="{Binding ReleasedDate}" x:Name="ReleasedDate"  Grid.Column="1" Margin="20 0 0 0" />
-                    </Grid>
-
-                    <Grid Grid.Row="5" Margin="0 10" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition />
@@ -122,10 +113,54 @@
 
                     <Button Grid.Column="1" Grid.Row="2" Height="60" Width="120"/>
                 </Grid>
-                
+
             </Grid>
 
-            <ListBox Grid.Row="1"/>
+            <Grid Grid.Row="1"  Margin="0 10" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Opis: " Grid.Column="0" />
+                <TextBlock Text="{Binding Description}" x:Name="Descryption" Grid.Column="1"  Margin="20 0 0 0" TextWrapping="Wrap" />
+            </Grid>
+
+            <ListView Grid.Column="1" Grid.Row="2" ItemsSource="{Binding Comments}" 
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:Name="TableDataTemplate2">
+                        <Grid Height="Auto" MaxWidth="1000">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Ellipse Grid.Column="0" Height="32" Width="32" VerticalAlignment="Center">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="/Assets/community.png"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
+
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" VerticalAlignment="Center" Padding="40 0 0 0">
+                            <Run Text="User: " FontSize="18"/>
+                            <Run Text="{Binding User}" FontSize="18" />
+                                </TextBlock>
+                                <TextBlock Grid.Row="1" VerticalAlignment="Center" Padding="40 0 0 0">
+                            <Run Text="{Binding Text}"/>
+                            </TextBlock>
+                            </Grid>
+                            
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
     </Grid>
 </UserControl>
