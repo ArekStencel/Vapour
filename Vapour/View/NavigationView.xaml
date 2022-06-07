@@ -21,7 +21,7 @@
         <Grid Grid.Row="1"
               Background="{StaticResource BrushColor2}">
 
-            <Grid MaxWidth="1000">
+            <Grid>
                 <Grid.Resources>
                     <Style BasedOn="{StaticResource NavButton}" TargetType="RadioButton"/>
                 </Grid.Resources>

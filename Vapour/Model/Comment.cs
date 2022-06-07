@@ -11,7 +11,8 @@ namespace Vapour.Model
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Text;
+
     public partial class Comment
     {
         public int Id { get; set; }
@@ -22,5 +23,13 @@ namespace Vapour.Model
     
         public virtual Game Game { get; set; }
         public virtual User User { get; set; }
+
+        //public override string ToString()
+        //{
+        //    var sb = new StringBuilder()
+        //        .Append(UserId)
+        //        .Append(Text);
+        //    return sb.ToString();
+        //}
     }
 }
