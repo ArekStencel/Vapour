@@ -143,7 +143,7 @@ namespace Vapour.ViewModel
                 }
             }
 
-            return (SumRate / howMany).ToString();
+            return Math.Round((SumRate / howMany),2).ToString();
         }
 
         private List<GameCommentDto> GetGameComments(int id)

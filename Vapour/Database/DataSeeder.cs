@@ -158,7 +158,7 @@ namespace Vapour.Database
                         .RuleFor(g => g.GameId, gameId)
                         .RuleFor(g => g.UserId, i);
 
-                    var generatedComment = commentsGenerator.Generate(_random.Next(1, 3));
+                    var generatedComment = commentsGenerator.Generate(Convert.ToInt32(_random.NextDouble() + 1));
                     comments.AddRange(generatedComment);
                 }
             }
