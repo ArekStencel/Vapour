@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
 
         <ListView Grid.Column="0" ItemsSource="{Binding Games}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                  SelectedItem="{Binding SelectedGame}" >
+                  SelectedItem="{Binding SelectedGame}" MaxHeight="450">
             <ListView.ItemTemplate>
                 <DataTemplate x:Name="TableDataTemplate">
                     <Grid Height="Auto" MaxWidth="1000">

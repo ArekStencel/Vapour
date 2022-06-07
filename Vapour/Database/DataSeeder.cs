@@ -46,12 +46,12 @@ namespace Vapour.Database
 
                 if (!_dataContext.Games.Any())
                 {
+                    var games = AddGames();
+                    _dataContext.Games.AddRange(games);
+
                     var randomGeneratedGames = AddRandomGeneratedGames();
                      _dataContext.Games.AddRange(randomGeneratedGames);
-
-                     var games = AddGames();
-                     _dataContext.Games.AddRange(games);
-
+                  
                      _dataContext.SaveChanges();
                 }
 
