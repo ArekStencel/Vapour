@@ -1,10 +1,12 @@
 ﻿using Bogus;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Markup;
 using Bogus.DataSets;
 using Vapour.Model;
 
@@ -12,7 +14,8 @@ namespace Vapour.Database
 {
     internal class DataSeeder
     {
-        private readonly VapourDatabaseEntities _dataContext;
+        private static VapourDatabaseEntities _dataContext;
+        private static readonly Random _random = new Random();
         
         public DataSeeder(VapourDatabaseEntities dataContext)
         {
@@ -34,6 +37,10 @@ namespace Vapour.Database
                 {
                     var users = AddUsers();
                     _dataContext.Users.AddRange(users);
+
+                    var randomGeneratedUsers = AddRandomGeneratedUsers();
+                    _dataContext.Users.AddRange(randomGeneratedUsers);
+
                     _dataContext.SaveChanges();
                 }
 
@@ -59,6 +66,10 @@ namespace Vapour.Database
                 {
                     var comments = AddComments();
                     _dataContext.Comments.AddRange(comments);
+                    //
+                    // var randomGeneratedComments = AddRandomGeneratedComments();
+                    // _dataContext.Comments.AddRange(randomGeneratedComments);
+                    
                     _dataContext.SaveChanges();
                 }
 
@@ -66,6 +77,10 @@ namespace Vapour.Database
                 {
                     var rates = AddRates();
                     _dataContext.Rates.AddRange(rates);
+                    
+                    // var randomGeneratedRates = AddRandomGeneratedRates();
+                    // _dataContext.Rates.AddRange(randomGeneratedRates);
+                    
                     _dataContext.SaveChanges();
                 }
 
@@ -73,6 +88,13 @@ namespace Vapour.Database
                 {
                     var gamesCollections = AddGamesCollections();
                     _dataContext.GamesCollections.AddRange(gamesCollections);
+
+                    var (generatedGamesCollections, generatedRates, generatedComments) 
+                        = AddRandomGeneratedGamesCollectionCommentsRates();
+                    _dataContext.GamesCollections.AddRange(generatedGamesCollections);
+                    _dataContext.Rates.AddRange(generatedRates);
+                    _dataContext.Comments.AddRange(generatedComments);
+                    
                     _dataContext.SaveChanges();
                 }
 
@@ -84,21 +106,126 @@ namespace Vapour.Database
                 }
             }
         }
+        
+        private static IEnumerable<User> AddRandomGeneratedUsers()
+        {
+            var usersGenerator = new Faker<User>()
+                .RuleFor(g => g.Name, f => f.Person.UserName)
+                .RuleFor(g => g.Email, f => f.Person.Email)
+                .RuleFor(g => g.Password, "AJUJI40TXwnwB84pQXW7xXQizUwx6jSwfPWwbhR/G2OPOjTeCNQu12IHabvFOebKkA==")
+                .RuleFor(g => g.WalletBalance, f => decimal.Round(f.Random.Decimal(0, 1000), 2))
+                .RuleFor(g => g.RoleId, f => f.Random.Int(1, 2))
+                .RuleFor(g => g.Description, f =>
+                {
+                    var description = f.Lorem.Sentence(_random.Next(10, 50));
+                    return description.Length > 255 ? description.Substring(0, 250) + "..." : description;
+                });
 
+            var generatedUsers = usersGenerator.Generate(50);
+            return generatedUsers;
+        }
+        
+        private static IEnumerable<Comment> AddRandomGeneratedComments()
+        {
+            var commentsGenerator = new Faker<Comment>()
+                .RuleFor(g => g.Text, f =>
+                {
+                    var text = f.Commerce.ProductDescription();
+                    return text.Length > 255 ? text.Substring(0, 250) + "..." : text;
+                })
+                .RuleFor(g => g.CreatedAt, f => f.Date.Past())
+                .RuleFor(g => g.GameId, f => f.Random.Int(1, 111))
+                .RuleFor(g => g.UserId, f => f.Random.Int(1, 50));
+
+            var generatedComments = commentsGenerator.Generate(500);
+            return generatedComments;
+        }
+
+        private static IEnumerable<Rate> AddRandomGeneratedRates()
+        {
+            var generatedRates = new List<Rate>();
+            
+            for (var i = 1; i < _dataContext.Users.Count(); i++)
+            {
+                var ratesGenerator = new Faker<Rate>()
+                    .RuleFor(g => g.Rate1, f => f.Random.Int(1, 5))
+                    .RuleFor(g => g.GameId, f => f.Random.Int(5, 111))
+                    .RuleFor(g => g.UserId, i);
+                
+                var generatedRate = ratesGenerator.Generate();
+                generatedRates.Add(generatedRate);
+            }
+            
+            return generatedRates;
+        }
+        
+        private static IEnumerable<int> InitializeArrayWithNoDuplicates(int size, int min, int max)
+        {
+            var randomNumbers = new HashSet<int>();
+            for (var i = 0; i < size; i++)
+            {
+                randomNumbers.Add(_random.Next(min, max));
+            }
+            return randomNumbers;
+        }
+        
+        private static Tuple<List<GamesCollection>, List<Rate>, List<Comment>> AddRandomGeneratedGamesCollectionCommentsRates()
+        {
+            var gamesCollections = new List<GamesCollection>();
+            var rates = new List<Rate>();
+            var comments = new List<Comment>();
+            
+            for (var i = 5; i < _dataContext.Users.Count(); i++)
+            {
+                var randomGames = InitializeArrayWithNoDuplicates(10, 1, _dataContext.Games.Count());
+
+                foreach (var gameId in randomGames)
+                {
+                    var gameCollectionsGenerator = new Faker<GamesCollection>()
+                        .RuleFor(g => g.GameId, gameId)
+                        .RuleFor(g => g.UserId, i);
+                    
+                    var generatedGamesCollection = gameCollectionsGenerator.Generate();
+                    gamesCollections.Add(generatedGamesCollection);
+                    
+                    var ratesGenerator = new Faker<Rate>()
+                        .RuleFor(g => g.Rate1, f => f.Random.Int(1, 5))
+                        .RuleFor(g => g.GameId, gameId)
+                        .RuleFor(g => g.UserId, i);
+                
+                    var generatedRate = ratesGenerator.Generate();
+                    rates.Add(generatedRate);
+                    
+                    var commentsGenerator = new Faker<Comment>()
+                        .RuleFor(g => g.Text, f =>
+                        {
+                            var text = f.Commerce.ProductDescription();
+                            return text.Length > 255 ? text.Substring(0, 250) + "..." : text;
+                        })
+                        .RuleFor(g => g.CreatedAt, f => f.Date.Past())
+                        .RuleFor(g => g.GameId, gameId)
+                        .RuleFor(g => g.UserId, i);
+
+                    var generatedComment = commentsGenerator.Generate(3);
+                    comments.AddRange(generatedComment);
+                }
+            }
+
+            return Tuple.Create(gamesCollections, rates, comments);;
+        }
+        
         private static IEnumerable<Game> AddRandomGeneratedGames()
         {
-            var games = new List<Game>();
-            var random = new Random();
             var gamesGenerator = new Faker<Game>()
                 .RuleFor(g => g.Title, f =>
                 {
                     var title = f.Commerce.Product();
-                    var subtitle = f.Lorem.Words(random.Next(0, 4));
+                    var subtitle = f.Lorem.Words(_random.Next(0, 4));
                     return char.ToUpper(title[0]) + title.Substring(1) + " " + string.Join(" ", subtitle);
                 })
                 .RuleFor(g => g.Description, f =>
                 {
-                    var description = f.Lorem.Sentence(random.Next(10, 50));
+                    var description = f.Lorem.Sentence(_random.Next(10, 50));
                     return description.Length > 255 ? description.Substring(0, 250) + "..." : description;
                 })
                 .RuleFor(g => g.GenreId, f => f.Random.Int(1, 9))
