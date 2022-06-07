@@ -66,10 +66,6 @@ namespace Vapour.Database
                 {
                     var comments = AddComments();
                     _dataContext.Comments.AddRange(comments);
-                    //
-                    // var randomGeneratedComments = AddRandomGeneratedComments();
-                    // _dataContext.Comments.AddRange(randomGeneratedComments);
-                    
                     _dataContext.SaveChanges();
                 }
 
@@ -77,10 +73,6 @@ namespace Vapour.Database
                 {
                     var rates = AddRates();
                     _dataContext.Rates.AddRange(rates);
-                    
-                    // var randomGeneratedRates = AddRandomGeneratedRates();
-                    // _dataContext.Rates.AddRange(randomGeneratedRates);
-                    
                     _dataContext.SaveChanges();
                 }
 
@@ -102,6 +94,10 @@ namespace Vapour.Database
                 {
                     var follows = AddFollows();
                     _dataContext.Follows.AddRange(follows);
+
+                    var randomGeneratedFollowers = AddRandomGeneratedFollowers();
+                    _dataContext.Follows.AddRange(randomGeneratedFollowers);
+
                     _dataContext.SaveChanges();
                 }
             }
@@ -124,51 +120,7 @@ namespace Vapour.Database
             var generatedUsers = usersGenerator.Generate(50);
             return generatedUsers;
         }
-        
-        private static IEnumerable<Comment> AddRandomGeneratedComments()
-        {
-            var commentsGenerator = new Faker<Comment>()
-                .RuleFor(g => g.Text, f =>
-                {
-                    var text = f.Commerce.ProductDescription();
-                    return text.Length > 255 ? text.Substring(0, 250) + "..." : text;
-                })
-                .RuleFor(g => g.CreatedAt, f => f.Date.Past())
-                .RuleFor(g => g.GameId, f => f.Random.Int(1, 111))
-                .RuleFor(g => g.UserId, f => f.Random.Int(1, 50));
 
-            var generatedComments = commentsGenerator.Generate(500);
-            return generatedComments;
-        }
-
-        private static IEnumerable<Rate> AddRandomGeneratedRates()
-        {
-            var generatedRates = new List<Rate>();
-            
-            for (var i = 1; i < _dataContext.Users.Count(); i++)
-            {
-                var ratesGenerator = new Faker<Rate>()
-                    .RuleFor(g => g.Rate1, f => f.Random.Int(1, 5))
-                    .RuleFor(g => g.GameId, f => f.Random.Int(5, 111))
-                    .RuleFor(g => g.UserId, i);
-                
-                var generatedRate = ratesGenerator.Generate();
-                generatedRates.Add(generatedRate);
-            }
-            
-            return generatedRates;
-        }
-        
-        private static IEnumerable<int> InitializeArrayWithNoDuplicates(int size, int min, int max)
-        {
-            var randomNumbers = new HashSet<int>();
-            for (var i = 0; i < size; i++)
-            {
-                randomNumbers.Add(_random.Next(min, max));
-            }
-            return randomNumbers;
-        }
-        
         private static Tuple<List<GamesCollection>, List<Rate>, List<Comment>> AddRandomGeneratedGamesCollectionCommentsRates()
         {
             var gamesCollections = new List<GamesCollection>();
@@ -206,14 +158,48 @@ namespace Vapour.Database
                         .RuleFor(g => g.GameId, gameId)
                         .RuleFor(g => g.UserId, i);
 
-                    var generatedComment = commentsGenerator.Generate(3);
+                    var generatedComment = commentsGenerator.Generate(_random.Next(1, 3));
                     comments.AddRange(generatedComment);
                 }
             }
 
             return Tuple.Create(gamesCollections, rates, comments);;
         }
-        
+
+        private static IEnumerable<int> InitializeArrayWithNoDuplicates(int size, int min, int max)
+        {
+            var randomNumbers = new HashSet<int>();
+            for (var i = 0; i < size; i++)
+            {
+                randomNumbers.Add(_random.Next(min, max));
+            }
+            return randomNumbers;
+        }
+
+        private static IEnumerable<Follow> AddRandomGeneratedFollowers()
+        {
+            var followers = new List<Follow>();
+
+            for (var userId = 5; userId < _dataContext.Users.Count(); userId++)
+            {
+                var randomFollowers = InitializeArrayWithNoDuplicates(10, 1, _dataContext.Users.Count()).ToList();
+                randomFollowers.Remove(userId);
+
+                foreach (var followerId in randomFollowers)
+                {
+                    var followersGenerator = new Faker<Follow>()
+                        .RuleFor(g => g.UserId, userId)
+                        .RuleFor(g => g.FollowerId, followerId);
+
+                    var follower = followersGenerator.Generate();
+
+                    followers.Add(follower);
+                }
+            }
+
+            return followers;
+        }
+
         private static IEnumerable<Game> AddRandomGeneratedGames()
         {
             var gamesGenerator = new Faker<Game>()
