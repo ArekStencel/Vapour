@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Bogus;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Bogus.DataSets;
 using Vapour.Model;
 
 namespace Vapour.Database
@@ -44,9 +46,13 @@ namespace Vapour.Database
 
                 if (!_dataContext.Games.Any())
                 {
-                    var games = AddGames();
-                    _dataContext.Games.AddRange(games);
-                    _dataContext.SaveChanges();
+                    var randomGeneratedGames = AddRandomGeneratedGames();
+                     _dataContext.Games.AddRange(randomGeneratedGames);
+
+                     var games = AddGames();
+                     _dataContext.Games.AddRange(games);
+
+                     _dataContext.SaveChanges();
                 }
 
                 if (!_dataContext.Comments.Any())
@@ -77,6 +83,30 @@ namespace Vapour.Database
                     _dataContext.SaveChanges();
                 }
             }
+        }
+
+        private static IEnumerable<Game> AddRandomGeneratedGames()
+        {
+            var games = new List<Game>();
+            var random = new Random();
+            var gamesGenerator = new Faker<Game>()
+                .RuleFor(g => g.Title, f =>
+                {
+                    var title = f.Commerce.Product();
+                    var subtitle = f.Lorem.Words(random.Next(0, 4));
+                    return char.ToUpper(title[0]) + title.Substring(1) + " " + string.Join(" ", subtitle);
+                })
+                .RuleFor(g => g.Description, f =>
+                {
+                    var description = f.Lorem.Sentence(random.Next(10, 50));
+                    return description.Length > 255 ? description.Substring(0, 250) + "..." : description;
+                })
+                .RuleFor(g => g.GenreId, f => f.Random.Int(1, 9))
+                .RuleFor(g => g.Price, f => decimal.Round(f.Random.Decimal(0, 300), 2))
+                .RuleFor(g => g.ReleaseDate, f => f.Date.Between(new DateTime(1990, 1, 1), DateTime.Now));
+
+            var generatedGames = gamesGenerator.Generate(100);
+            return generatedGames;
         }
 
         private static IEnumerable<Role> AddRoles()
