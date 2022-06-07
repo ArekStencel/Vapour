@@ -37,7 +37,6 @@
                         </TextBlock>
                         <TextBlock Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Right">
                             <Run Text="{Binding Price}"/>
-                            <Run Text="zł"/>
                         </TextBlock>
                     </Grid>
                 </DataTemplate>
@@ -128,13 +127,13 @@
             </Grid>
 
             <ListView Grid.Column="1" Grid.Row="2" ItemsSource="{Binding Comments}" 
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" MaxHeight="300" ScrollViewer.CanContentScroll="false">
                 <ListView.ItemTemplate>
                     <DataTemplate x:Name="TableDataTemplate2">
                         <Grid Height="Auto" MaxWidth="1000">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="285"/>
                             </Grid.ColumnDefinitions>
 
                             <Ellipse Grid.Column="0" Height="32" Width="32" VerticalAlignment="Center">
@@ -143,6 +142,7 @@
                                 </Ellipse.Fill>
                             </Ellipse>
 
+                            
                             <Grid Grid.Column="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
@@ -152,14 +152,15 @@
 
                                 <TextBlock Grid.Row="0" VerticalAlignment="Center" Padding="40 0 0 0">
                             <Run Text="{Binding User}" FontSize="18" />
+                            <Run Text="{Binding IsFollowing}" FontSize="13" />
                                 </TextBlock>
                                 <TextBlock Grid.Row="1" VerticalAlignment="Center" Padding="40 0 0 0">
                             <Run Text="Dodano: " FontSize="10" FontStyle="Italic"/>
-                            <Run Text="{Binding Date}" FontSize="10" FontStyle="Italic"/>                                
+                            <Run Text="{Binding Date}" FontSize="10" FontStyle="Italic"/>
                                 </TextBlock>
-                                <TextBlock Grid.Row="2" VerticalAlignment="Center" Padding="40 0 0 0" TextWrapping="Wrap">
+                                <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Padding="40 0 0 0" TextWrapping="Wrap">
                             <Run Text="{Binding Text}" FontSize="14" />
-                            </TextBlock>
+                                </TextBlock>
                             </Grid>
                             
                         </Grid>

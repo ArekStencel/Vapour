@@ -4,23 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Vapour.Model;
+using Vapour.Model.Dto;
 using Vapour.State;
 
 namespace Vapour.ViewModel
 {
-    public class GameComments
-    {
-        public string User { get; set; }
-        public string Text { get; set; }
-        public string Date { get; set; }
-    }
     public class StoreViewModel : BaseViewModel
     {
         private readonly VapourDatabaseEntities _dataContext;
         private readonly IAuthenticator _authenticator;
 
-        private List<Game> _games = new List<Game>();
-        public List<Game> Games
+        private List<GameDto> _games = new List<GameDto>();
+        public List<GameDto> Games
         {
             get => _games;
             set
@@ -30,8 +25,8 @@ namespace Vapour.ViewModel
             }
         }
 
-        private List<GameComments> _comments = new List<GameComments>();
-        public List<GameComments> Comments
+        private List<GameCommentDto> _comments = new List<GameCommentDto>();
+        public List<GameCommentDto> Comments
         {
             get => _comments;
             set
@@ -41,8 +36,8 @@ namespace Vapour.ViewModel
             }
         }
 
-        private Game _selectedGame;
-        public Game SelectedGame
+        private GameDto _selectedGame;
+        public GameDto SelectedGame
         {
             get => _selectedGame;
             set
@@ -50,9 +45,9 @@ namespace Vapour.ViewModel
                 _selectedGame = value;
                 Title = value.Title;
                 Price = value.Price.ToString();
-                Genre = value.Genre.Name;
+                Genre = value.Genre;
                 Description = value.Description;
-                ReleaseDate = value.ReleaseDate.ToString("dd.MM.yyyy");
+                ReleaseDate = value.ReleaseDate;
                 AverageRate = GetAverageRate(value.Id);
                 Comments = GetGameComments(value.Id);
 
@@ -78,6 +73,10 @@ namespace Vapour.ViewModel
             set
             {
                 _price = value;
+                if(_price == "0,0")
+                {
+                    _price = "Bezpłatne";
+                }
                 OnPropertyChanged(nameof(Price));
             }
         }
@@ -133,13 +132,6 @@ namespace Vapour.ViewModel
                 return "NA";
             }
 
-            //return _dataContext.Rates
-            //    .Where(r => r.GameId == id)
-            //    .GroupBy(r => r.GameId)
-            //    .Select(r => r.Key)
-            //    .Average()
-            //    .ToString();
-
             double SumRate = 0;
             int howMany = 0;
             foreach (var rate in _dataContext.Rates)
@@ -154,24 +146,34 @@ namespace Vapour.ViewModel
             return (SumRate / howMany).ToString();
         }
 
-        private List<GameComments> GetGameComments(int id)
+        private List<GameCommentDto> GetGameComments(int id)
         {
             var comments = _dataContext.Comments.ToList();
-            var gameComments = new List<GameComments>();
+            var gameComments = new List<GameCommentDto>();
 
             foreach (var comment in comments)
             {
                 if (comment.GameId == id)
                 {
-                    Console.WriteLine(_dataContext.Users.Where(u => u.Id == comment.UserId).Select(u => u.Name).ToString());
-                    gameComments.Add(new GameComments() {
-                        //User = comment.UserId.ToString(),
-                        User = (from u in _dataContext.Users 
-                               where u.Id == comment.UserId
-                                select u.Name).First().ToString(),
+                    var user = _dataContext.Users.Where(u => u.Id == comment.UserId).FirstOrDefault();
+
+                    var isFollowing = "";
+
+                    if (_dataContext.Follows
+                        .Where(x => x.FollowerId == user.Id)
+                        .Where(y => y.UserId == _authenticator.CurrentUser.Id)
+                        .Where(z => z.FollowerId != _authenticator.CurrentUser.Id)
+                        .Count() != 0)
+                    {
+                        isFollowing = "(Obserwujesz)";
+                    }
+
+                    gameComments.Add(new GameCommentDto() {
+                        User = user.Name,
+                        IsFollowing = isFollowing,
                         Text = comment.Text,
                         Date = comment.CreatedAt.ToString()
-                    });;
+                    }) ;
                 }
             }
 
@@ -184,7 +186,24 @@ namespace Vapour.ViewModel
 
             foreach (var game in games)
             {
-               _games.Add(game);
+                var price = game.Price.ToString();
+                if (price =="0,0")
+                {
+                    price = "Bezpłatne";
+                }
+                else
+                {
+                    price += " zł";
+                }
+                _games.Add(new GameDto()
+                {
+                    Id = game.Id,
+                    Title = game.Title,
+                    Price = price,
+                    Genre = game.Genre.Name,
+                    Description = game.Description,
+                    ReleaseDate = game.ReleaseDate.ToString("dd.MM.yyyy")
+                });
             }
         }
 

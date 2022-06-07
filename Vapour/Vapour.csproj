@@ -150,6 +150,7 @@
     <Compile Include="Command\UpdateCurrentViewModelCommand.cs" />
     <Compile Include="Exception\InvalidPasswordException.cs" />
     <Compile Include="Exception\UserNotFoundException.cs" />
+    <Compile Include="Model\Dto\GameDto.cs" />
     <Compile Include="Model\Dto\RegisterUserDto.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\IAuthenticationService.cs" />
