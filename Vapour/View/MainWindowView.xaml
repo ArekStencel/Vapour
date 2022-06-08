@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:Vapour"
         xmlns:view="clr-namespace:Vapour.View"
         mc:Ignorable="d"
-        Title="Vapour" Height="768" Width="1024"
-        MinHeight="500" MinWidth="800">
+        Title="Vapour" Height="770" Width="1024"
+        MinHeight="500" MinWidth="1000">
     <Grid>
 
         <Grid.RowDefinitions>

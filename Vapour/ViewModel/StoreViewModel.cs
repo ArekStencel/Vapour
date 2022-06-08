@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Vapour.Model;
 using Vapour.Model.Dto;
 using Vapour.State;
+using Vapour.ViewModel.Base;
 
 namespace Vapour.ViewModel
 {
@@ -212,6 +214,24 @@ namespace Vapour.ViewModel
             _dataContext = dataContext;
             _authenticator = authenticator; 
             GetAllGames();
+            SelectedGame = Games[0];
+        }
+
+        private ICommand _buyGame;
+        public ICommand BuyGame
+        {
+            get
+            {
+                return _buyGame ?? (_buyGame = new RelayCommand(
+                    (object o) =>
+                    {
+                        Console.WriteLine("###### " + _selectedGame.Id);
+                    },
+                    (object o) =>
+                    {
+                        return true;
+                    }));
+            }
         }
     }
 }
