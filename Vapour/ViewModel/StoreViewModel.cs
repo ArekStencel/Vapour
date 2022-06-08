@@ -225,10 +225,22 @@ namespace Vapour.ViewModel
                 return _buyGame ?? (_buyGame = new RelayCommand(
                     (object o) =>
                     {
-                        Console.WriteLine("###### " + _selectedGame.Id);
+                        _dataContext.GamesCollections.Add(new GamesCollection()
+                        {
+                            UserId = _authenticator.CurrentUser.Id,
+                            GameId = _selectedGame.Id,
+                        }) ;
+                        _dataContext.SaveChanges();
                     },
                     (object o) =>
                     {
+                        if (_dataContext.GamesCollections
+                        .Where(g => g.GameId == _selectedGame.Id)
+                        .Where(u => u.UserId == _authenticator.CurrentUser.Id)
+                        .Count() != 0)
+                        {
+                            return false;
+                        }
                         return true;
                     }));
             }
