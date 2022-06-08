@@ -24,5 +24,9 @@ namespace Vapour.View
         {
             InitializeComponent();
         }
+
     }
+
+
+
 }

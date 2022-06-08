@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,9 +11,11 @@ namespace Vapour.ViewModel
 {
     public class LibraryViewModel : BaseViewModel
     {
+
+
+
         private readonly VapourDatabaseEntities _dataContext;
         private readonly IAuthenticator _authenticator;
-
         private List<string> _gamesCollection = new List<string>();
         public List<string> GamesCollection
         {
