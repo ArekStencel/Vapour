@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Vapour.Model;
 using Vapour.Model.Dto;
@@ -225,12 +226,28 @@ namespace Vapour.ViewModel
                 return _buyGame ?? (_buyGame = new RelayCommand(
                     (object o) =>
                     {
+                        if (_authenticator.CurrentUser.WalletBalance<decimal.Parse(_selectedGame.Price.Substring(0,_selectedGame.Price.Length - 3)))
+                        {
+                            MessageBoxResult declain = MessageBox.Show(
+                                "Brak środków na koncie. \nCena gry: " 
+                                + _selectedGame.Price 
+                                + "\nŚrodki na koncie: " 
+                                + _authenticator.CurrentUser.WalletBalance, "Brak środków na koncie", MessageBoxButton.OK);
+                            return;
+                        }
                         _dataContext.GamesCollections.Add(new GamesCollection()
                         {
                             UserId = _authenticator.CurrentUser.Id,
                             GameId = _selectedGame.Id,
                         }) ;
                         _dataContext.SaveChanges();
+                        MessageBoxResult accept = MessageBox.Show(
+                                "Gratulujemy zakupu. \nCena gry: "
+                                + _selectedGame.Price
+                                + "\nŚrodki na koncie: "
+                                + _authenticator.CurrentUser.WalletBalance
+                                + "\nSaldo po zakupie: "
+                                + (_authenticator.CurrentUser.WalletBalance-decimal.Parse(_selectedGame.Price.Substring(0, _selectedGame.Price.Length - 3))), "Gratulujemy zakupu", MessageBoxButton.OK);
                     },
                     (object o) =>
                     {
