@@ -4,7 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Markup;
 using Vapour.Model;
 using Vapour.Model.Dto;
 using Vapour.State;
@@ -133,15 +135,26 @@ namespace Vapour.ViewModel
 
         private void GetUserGames()
         {
+            var userGames = _dataContext.GamesCollections.Where(u => u.UserId == _authenticator.CurrentUser.Id).ToList();
             var games = _dataContext.Games.ToList();
+            var xd = new List<int>();
+
+            foreach (var x in userGames)
+            {
+                xd.Add(x.GameId);
+            }
+
 
             foreach (var game in games)
             {
-                _gamesCollection.Add(new GameDto()
+                if (xd.Contains(game.Id))
                 {
-                    Id = game.Id,
-                    Title = game.Title,
-                });
+                    _gamesCollection.Add(new GameDto()
+                    {
+                        Id = game.Id,
+                        Title = game.Title,
+                    });
+                }
             }
         }
 
@@ -153,5 +166,39 @@ namespace Vapour.ViewModel
             SelectedGame = GamesCollection[0];
         }
 
+        private ICommand _playGame;
+        public ICommand PlayGame
+        {
+            get
+            {
+                return _playGame ?? (_playGame = new RelayCommand(
+                    (object o) =>
+                    {
+                        MessageBox.Show("Gra jest właśnie uruchamiana");
+                    },
+                    (object o) =>
+                    {
+                        return true;
+                    }));
+            }
+        }
+
+
+        private ICommand _addComment;
+        public ICommand AddComment
+        {
+            get
+            {
+                return _addComment ?? (_addComment = new RelayCommand(
+                    (object o) =>
+                    {
+                        MessageBox.Show("Dodałeś recenzję!");
+                    },
+                    (object o) =>
+                    {
+                        return true;
+                    }));
+            }
+        }
     }
 }
