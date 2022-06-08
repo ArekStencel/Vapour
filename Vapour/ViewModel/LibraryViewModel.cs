@@ -4,20 +4,22 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Vapour.Model;
+using Vapour.Model.Dto;
 using Vapour.State;
+using Vapour.ViewModel.Base;
 
 namespace Vapour.ViewModel
 {
     public class LibraryViewModel : BaseViewModel
     {
 
-
-
-        private readonly VapourDatabaseEntities _dataContext;
+       private readonly VapourDatabaseEntities _dataContext;
         private readonly IAuthenticator _authenticator;
-        private List<string> _gamesCollection = new List<string>();
-        public List<string> GamesCollection
+
+        private List<GameDto> _gamesCollection = new List<GameDto>();
+        public List<GameDto> GamesCollection
         {
             get => _gamesCollection;
             set
@@ -27,20 +29,129 @@ namespace Vapour.ViewModel
             }
         }
 
-        private void GetUserGamesCollection()
+        private List<GameCommentDto> _comments = new List<GameCommentDto>();
+        public List<GameCommentDto> Comments
         {
-            var games = _dataContext.GamesCollections.Where(u => u.UserId == _authenticator.CurrentUser.Id).ToList();
-            foreach (var game in games)
+            get => _comments;
+            set
             {
-                _gamesCollection.Add(game.Game.Title);
+                _comments = value;
+                OnPropertyChanged(nameof(Comments));
             }
         }
 
-        public LibraryViewModel(IAuthenticator authenticator, VapourDatabaseEntities dataContext)
+        private GameDto _selectedGame;
+        public GameDto SelectedGame
         {
-            _authenticator = authenticator;
-            _dataContext = dataContext;
-            GetUserGamesCollection();
+            get => _selectedGame;
+            set
+            {
+                _selectedGame = value;
+                Title = value.Title;
+                AverageRate = GetAverageRate(value.Id);
+                Comments = GetGameComments(value.Id);
+                OnPropertyChanged(nameof(SelectedGame));
+            }
         }
+
+        private string _title;
+        public string Title
+        {
+            get => _title;
+            set
+            {
+                _title = value;
+                OnPropertyChanged(nameof(Title));
+            }
+        }
+
+
+        private string _averageRate;
+        public string AverageRate
+        {
+            get => _averageRate;
+            set
+            {
+                _averageRate = value;
+                OnPropertyChanged(nameof(AverageRate));
+            }
+        }
+
+        private string GetAverageRate(int id)
+        {
+            if (_dataContext.Rates.Any(r => r.GameId == id) == false)
+            {
+                return "NA";
+            }
+
+            double SumRate = 0;
+            int howMany = 0;
+            foreach (var rate in _dataContext.Rates)
+            {
+                if (rate.GameId == id)
+                {
+                    SumRate += rate.Rate1;
+                    howMany++;
+                }
+            }
+            return Math.Round((SumRate / howMany),2).ToString();
+        }
+
+        private List<GameCommentDto> GetGameComments(int id)
+        {
+            var comments = _dataContext.Comments.ToList();
+            var gameComments = new List<GameCommentDto>();
+
+            foreach (var comment in comments)
+            {
+                if (comment.GameId == id)
+                {
+                    var user = _dataContext.Users.Where(u => u.Id == comment.UserId).FirstOrDefault();
+
+                    var isFollowing = "";
+
+                    if (_dataContext.Follows
+                        .Where(x => x.FollowerId == user.Id)
+                        .Where(y => y.UserId == _authenticator.CurrentUser.Id)
+                        .Where(z => z.FollowerId != _authenticator.CurrentUser.Id)
+                        .Count() != 0)
+                    {
+                        isFollowing = "(Obserwujesz)";
+                    }
+
+                    gameComments.Add(new GameCommentDto() {
+                        User = user.Name,
+                        IsFollowing = isFollowing,
+                        Text = comment.Text,
+                        Date = comment.CreatedAt.ToString()
+                    }) ;
+                }
+            }
+
+            return gameComments;
+        }
+
+        private void GetUserGames()
+        {
+            var games = _dataContext.Games.ToList();
+
+            foreach (var game in games)
+            {
+                _gamesCollection.Add(new GameDto()
+                {
+                    Id = game.Id,
+                    Title = game.Title,
+                });
+            }
+        }
+
+        public LibraryViewModel(VapourDatabaseEntities dataContext, IAuthenticator authenticator)
+        {
+            _dataContext = dataContext;
+            _authenticator = authenticator;
+            GetUserGames();
+            SelectedGame = GamesCollection[0];
+        }
+
     }
 }

@@ -5,18 +5,18 @@ namespace Vapour.ViewModel.Factories
 {
     public class LibraryViewModelFactory : IViewModelFactory<LibraryViewModel>
     {
-        private readonly IAuthenticator _authenticator;
         private readonly VapourDatabaseEntities _dataContext;
+        private readonly IAuthenticator _authenticator;
 
-        public LibraryViewModelFactory(IAuthenticator authenticator, VapourDatabaseEntities dataContext)
+        public LibraryViewModelFactory(VapourDatabaseEntities dataContext, IAuthenticator authenticator)
         {
-            _authenticator = authenticator;
             _dataContext = dataContext;
+            _authenticator = authenticator;
         }
 
         public LibraryViewModel CreateViewModel()
         {
-            return new LibraryViewModel(_authenticator, _dataContext);
+            return new LibraryViewModel(_dataContext, _authenticator);
         }
     }
 }

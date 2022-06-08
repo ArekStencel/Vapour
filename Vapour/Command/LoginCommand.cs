@@ -38,7 +38,7 @@ namespace Vapour.Command
 
             if (success)
             {
-                _navigator.CurrentViewModel = new LibraryViewModel(_authenticator, _dataContext);
+                _navigator.CurrentViewModel = new LibraryViewModel(_dataContext, _authenticator);
             }
         }
     }
