@@ -7,8 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    
-        <Grid Margin="15" >
+
+        <Grid Margin="15" ScrollViewer.VerticalScrollBarVisibility="Disabled">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition />
@@ -45,8 +45,9 @@
                             </TextBlock>
                             <TextBlock Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Right">
                                 <Run Text="{Binding Price}"/>
+                                <Run Text="{Binding Currency}"/>
                             </TextBlock>
-                        </Grid>
+                    </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -80,7 +81,7 @@
                         </Grid.RowDefinitions>
 
                         <Grid.Resources>
-                            <Style BasedOn="{StaticResource LoginButton}" TargetType="Button" />
+                            <Style BasedOn="{StaticResource BuyButton}" TargetType="Button" />
                         </Grid.Resources>
 
                         
@@ -92,7 +93,12 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Text="Cena: " Grid.Column="0" FontWeight="Bold" FontSize="15" VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding Price}" x:Name="Price"  Grid.Column="1" Margin="20 0 0 0" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="20 0 0 0">
+                                <Run Text="{Binding Price}" x:Name="Price"/>
+                                <Run Text="{Binding Currency}" x:Name="Currency"/>
+                            </TextBlock>
+                            <!--<TextBlock Text="{Binding Price}" x:Name="Price"  Grid.Column="1" Margin="20 0 0 0" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Currency}" x:Name="Currency"  Grid.Column="1" Margin="20 0 0 0" VerticalAlignment="Center"/>-->
                         </Grid>
 
                         <Grid Grid.Row="1" Margin="0 10" >
@@ -126,7 +132,7 @@
                         </Grid>
 
                         <Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" Height="60" Width="100"
-                                Content="Kup" Command="{Binding BuyGame}"/>
+                                Content="{Binding ButtonText}" Command="{Binding BuyGame}"/>
                     </Grid>
 
                 </Grid>
@@ -142,7 +148,7 @@
                                Margin="20 0 0 0" TextWrapping="Wrap" />
                 </Grid>
 
-                <ListView Grid.Column="1" Grid.Row="3" ItemsSource="{Binding Comments}" 
+                <ListView Grid.Column="1" Grid.Row="3" ItemsSource="{Binding Comments}" MinHeight="300" 
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled" MaxHeight="300" ScrollViewer.CanContentScroll="false">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="{x:Type ListViewItem}">

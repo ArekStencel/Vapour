@@ -6,12 +6,14 @@
     <Color x:Key="Color3">#339989</Color>
     <Color x:Key="Color4">#7de2d1</Color>
     <Color x:Key="Color5">#fffafb</Color>
+    <Color x:Key="Color6">#4c4d49</Color>
 
     <SolidColorBrush x:Key="BrushColor1" Color="{StaticResource Color1}" />
     <SolidColorBrush x:Key="BrushColor2" Color="{StaticResource Color2}" />
     <SolidColorBrush x:Key="BrushColor3" Color="{StaticResource Color3}" />
     <SolidColorBrush x:Key="BrushColor4" Color="{StaticResource Color4}" />
     <SolidColorBrush x:Key="BrushColor5" Color="{StaticResource Color5}" />
+    <SolidColorBrush x:Key="BrushColor6" Color="{StaticResource Color6}" />
 
     <Style x:Key="LoginInput" TargetType="TextBox">
         <Setter Property="Template">
@@ -62,6 +64,47 @@
                 <BeginStoryboard>
                     <Storyboard>
                         <ColorAnimation To="{StaticResource Color1}" Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="MouseLeave">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation To="{StaticResource Color2}" Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BuyButton" TargetType="Button">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Padding" Value="10 5"/>
+        <Setter Property="Margin" Value="0 20 0 0" />
+        <Setter Property="FontSize" Value="26"/>
+        <Setter Property="Background" Value="{StaticResource BrushColor2}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid x:Name="gridMain" Background="{TemplateBinding Background}">
+                        <TextBlock Text="{TemplateBinding Content}" 
+                                   Padding="{TemplateBinding Padding}"
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource BrushColor3}"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Content" Value="Kupione"/>
+            </Trigger>
+            <EventTrigger RoutedEvent="MouseEnter">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation To="{StaticResource Color6}" Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color"/>
                     </Storyboard>
                 </BeginStoryboard>
             </EventTrigger>
