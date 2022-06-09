@@ -49,10 +49,12 @@ namespace Vapour.ViewModel
                 Title = value.Title;
                 Price = value.Price.ToString();
                 Genre = value.Genre;
+                Currency = value.Currency;
                 Description = value.Description;
                 ReleaseDate = value.ReleaseDate;
                 AverageRate = GetAverageRate(value.Id);
                 Comments = GetGameComments(value.Id);
+                SetButtonText();
 
                 OnPropertyChanged(nameof(SelectedGame));
             }
@@ -81,6 +83,17 @@ namespace Vapour.ViewModel
                     _price = "Bezpłatne";
                 }
                 OnPropertyChanged(nameof(Price));
+            }
+        }
+
+        private string _currency;
+        public string Currency
+        {
+            get => _currency;
+            set
+            {
+                _currency = value;
+                OnPropertyChanged(nameof(Currency));
             }
         }
 
@@ -125,6 +138,17 @@ namespace Vapour.ViewModel
             {
                 _averageRate = value;
                 OnPropertyChanged(nameof(AverageRate));
+            }
+        }
+
+        private string _buttonText;
+        public string ButtonText
+        {
+            get => _buttonText;
+            set
+            {
+                _buttonText = value;
+                OnPropertyChanged(nameof(ButtonText));
             }
         }
 
@@ -190,23 +214,40 @@ namespace Vapour.ViewModel
             foreach (var game in games)
             {
                 var price = game.Price.ToString();
-                if (price =="0,0")
+                if (price == "0,0")
                 {
                     price = "Bezpłatne";
                 }
-                else
+                var currency = "";
+                if (price!= "Bezpłatne")
                 {
-                    price += " zł";
+                    currency = " zł";
                 }
                 _games.Add(new GameDto()
                 {
                     Id = game.Id,
                     Title = game.Title,
                     Price = price,
+                    Currency = currency,
                     Genre = game.Genre.Name,
                     Description = game.Description,
                     ReleaseDate = game.ReleaseDate.ToString("dd.MM.yyyy")
-                });
+                }) ;
+            }
+        }
+
+        private void SetButtonText()
+        {
+            if(_dataContext.GamesCollections
+            .Where(g => g.GameId == _selectedGame.Id)
+            .Where(u => u.UserId == _authenticator.CurrentUser.Id)
+            .Count() != 0)
+            {
+                ButtonText = "Kupiony";
+            }
+            else
+            {
+                ButtonText = "Kup";
             }
         }
 
@@ -226,7 +267,7 @@ namespace Vapour.ViewModel
                 return _buyGame ?? (_buyGame = new RelayCommand(
                     (object o) =>
                     {
-                        if (_authenticator.CurrentUser.WalletBalance<decimal.Parse(_selectedGame.Price.Substring(0,_selectedGame.Price.Length - 3)))
+                        if (IsWalletBallanceGreaterThanGamePrice())
                         {
                             MessageBoxResult declain = MessageBox.Show(
                                 "Brak środków na koncie. \nCena gry: " 
@@ -235,19 +276,28 @@ namespace Vapour.ViewModel
                                 + _authenticator.CurrentUser.WalletBalance, "Brak środków na koncie", MessageBoxButton.OK);
                             return;
                         }
+
                         _dataContext.GamesCollections.Add(new GamesCollection()
                         {
                             UserId = _authenticator.CurrentUser.Id,
                             GameId = _selectedGame.Id,
                         }) ;
-                        _dataContext.SaveChanges();
+
                         MessageBoxResult accept = MessageBox.Show(
                                 "Gratulujemy zakupu. \nCena gry: "
                                 + _selectedGame.Price
                                 + "\nŚrodki na koncie: "
                                 + _authenticator.CurrentUser.WalletBalance
                                 + "\nSaldo po zakupie: "
-                                + (_authenticator.CurrentUser.WalletBalance-decimal.Parse(_selectedGame.Price.Substring(0, _selectedGame.Price.Length - 3))), "Gratulujemy zakupu", MessageBoxButton.OK);
+                                + (_authenticator.CurrentUser.WalletBalance-decimal.Parse(_selectedGame.Price)), 
+                                "Gratulujemy zakupu", MessageBoxButton.OK);
+
+                        _dataContext.Users.Where(u => u.Id == _authenticator.CurrentUser.Id)
+                        .First().WalletBalance -= decimal.Parse(_selectedGame.Price);
+
+                        _dataContext.SaveChanges();
+                        SetButtonText();
+
                     },
                     (object o) =>
                     {
@@ -261,6 +311,15 @@ namespace Vapour.ViewModel
                         return true;
                     }));
             }
+        }
+
+        private bool IsWalletBallanceGreaterThanGamePrice()
+        {
+            if (_selectedGame.Price == "Bezpłatne")
+            {
+                _selectedGame.Price = "0,0";
+            }
+            return _authenticator.CurrentUser.WalletBalance < decimal.Parse(_selectedGame.Price);
         }
     }
 }
