@@ -19,107 +19,30 @@ namespace Vapour.ViewModel
 
         private readonly VapourDatabaseEntities _dataContext;
         private readonly IAuthenticator _authenticator;
-
         private List<GameDto> _gamesCollection = new List<GameDto>();
-
-        public List<GameDto> GamesCollection
-        {
-            get => _gamesCollection;
-            set
-            {
-                _gamesCollection = value;
-                OnPropertyChanged(nameof(GamesCollection));
-            }
-        }
-
         private List<GameCommentDto> _comments = new List<GameCommentDto>();
 
-        public List<GameCommentDto> Comments
+        public LibraryViewModel(VapourDatabaseEntities dataContext, IAuthenticator authenticator)
         {
-            get => _comments;
-            set
-            {
-                _comments = value;
-                OnPropertyChanged(nameof(Comments));
-            }
-        }
-
-        private GameDto _selectedGame;
-
-        public GameDto SelectedGame
-        {
-            get => _selectedGame;
-            set
-            {
-                _selectedGame = value;
-                Title = value.Title;
-                AverageRate = GetAverageRate(value.Id);
-                Comments = GetGameComments(value.Id);
-                OnPropertyChanged(nameof(SelectedGame));
-                CheckForRateEdit();
-                CommentText = "";
-            }
-        }
-
-        private string _title;
-
-        public string Title
-        {
-            get => _title;
-            set
-            {
-                _title = value;
-                OnPropertyChanged(nameof(Title));
-            }
-        }
-
-
-        private string _averageRate;
-
-        public string AverageRate
-        {
-            get => _averageRate;
-            set
-            {
-                _averageRate = value;
-                OnPropertyChanged(nameof(AverageRate));
-            }
-        }
-
-        private string GetAverageRate(int id)
-        {
-            if (_dataContext.Rates.Any(r => r.GameId == id) == false)
-            {
-                return "NA";
-            }
-
-            double SumRate = 0;
-            int howMany = 0;
-            foreach (var rate in _dataContext.Rates)
-            {
-                if (rate.GameId == id)
-                {
-                    SumRate += rate.Rate1;
-                    howMany++;
-                }
-            }
-
-            return Math.Round((SumRate / howMany), 2).ToString();
+            _dataContext = dataContext;
+            _authenticator = authenticator;
+            GetUserGames();
+            CheckForRateEdit();
+            SelectedGame = GamesCollection[0];
+            CommentButtonContent = "Dodaj nowy komentarz";
+            RateButtonContent = "Dodaj ocene";
         }
 
         private List<GameCommentDto> GetGameComments(int id)
         {
             var comments = _dataContext.Comments.ToList();
             var gameComments = new List<GameCommentDto>();
-
             foreach (var comment in comments)
             {
                 if (comment.GameId == id)
                 {
                     var user = _dataContext.Users.Where(u => u.Id == comment.UserId).FirstOrDefault();
-
                     var isFollowing = "";
-
                     if (_dataContext.Follows
                             .Where(x => x.FollowerId == user.Id)
                             .Where(y => y.UserId == _authenticator.CurrentUser.Id)
@@ -128,7 +51,6 @@ namespace Vapour.ViewModel
                     {
                         isFollowing = "(Obserwujesz)";
                     }
-
                     gameComments.Add(new GameCommentDto()
                     {
                         User = user.Name,
@@ -139,7 +61,6 @@ namespace Vapour.ViewModel
                     });
                 }
             }
-
             return gameComments;
         }
 
@@ -153,8 +74,6 @@ namespace Vapour.ViewModel
                     Title = g.Title,
                     Id = g.Id,
                 };
-
-
             foreach (var game in userGames)
             {
                 _gamesCollection.Add(new GameDto()
@@ -165,142 +84,62 @@ namespace Vapour.ViewModel
             }
         }
 
-        public LibraryViewModel(VapourDatabaseEntities dataContext, IAuthenticator authenticator)
+        private string GetAverageRate(int id)
         {
-            _dataContext = dataContext;
-            _authenticator = authenticator;
-            GetUserGames();
-            SelectedGame = GamesCollection[0];
-            CommentButtonContent = "Dodaj nowy komentarz";
-            RateButtonContent = "Dodaj ocene";
-            CheckForRateEdit();
-        }
-
-        private ICommand _playGame;
-
-        public ICommand PlayGame
-        {
-            get
+            if (_dataContext.Rates.Any(r => r.GameId == id) == false)
             {
-                return _playGame ?? (_playGame = new RelayCommand(
-                    (object o) => { MessageBox.Show("Gra jest właśnie uruchamiana"); },
-                    (object o) => { return true; }));
+                return "NA";
             }
-        }
-
-
-
-        private ICommand _addComment;
-
-        public ICommand AddComment
-        {
-            get
+            double SumRate = 0;
+            int howMany = 0;
+            foreach (var rate in _dataContext.Rates)
             {
-                return _addComment ?? (_addComment = new RelayCommand(
-                    (object o) => { MessageBox.Show("Komentarz został dodany"); },
-                    (object o) => { return true; }));
+                if (rate.GameId == id)
+                {
+                    SumRate += rate.Rate1;
+                    howMany++;
+                }
             }
+            return Math.Round((SumRate / howMany), 2).ToString();
         }
 
-
-        private ICommand _addRate;
-
-        public ICommand AddRate
+        private GameDto _selectedGame;
+        public GameDto SelectedGame
         {
-            get
-            {
-                return _addRate ?? (_addRate = new RelayCommand(
-                    (object o) => { MessageBox.Show("Ocena została dodana"); },
-                    (object o) => { return true; }));
-            }
-        }
-
-
-        private string _commentButtonContent;
-
-        public string CommentButtonContent
-        {
-            get { return _commentButtonContent; }
+            get => _selectedGame;
             set
             {
-                _commentButtonContent = value;
-                OnPropertyChanged(nameof(CommentButtonContent));
+                _selectedGame = value;
+                Title = value.Title;
+                AverageRate = GetAverageRate(value.Id);
+                Comments = GetGameComments(value.Id);
+                OnPropertyChanged(nameof(SelectedGame));
+                CheckForRateEdit();
+                CheckForCommentEdit();
+                CommentText = "";
             }
         }
 
-        private string _rateButtonContent;
-
-        public string RateButtonContent
+        public List<GameDto> GamesCollection
         {
-            get { return _rateButtonContent; }
+            get => _gamesCollection;
             set
             {
-                _rateButtonContent = value;
-                OnPropertyChanged(nameof(RateButtonContent));
+                _gamesCollection = value;
+                OnPropertyChanged(nameof(GamesCollection));
             }
         }
-
-
-
-        private int _sliderValue;
-
-        public int SliderValue
+        public List<GameCommentDto> Comments
         {
-            get { return _sliderValue; }
+            get => _comments;
             set
             {
-                _sliderValue = value;
-                SliderText = value.ToString();
-                OnPropertyChanged(nameof(SliderValue));
+                _comments = value;
+                OnPropertyChanged(nameof(Comments));
             }
         }
-
-
-        private string _sliderText;
-
-        public string SliderText
-        {
-            get { return _sliderText; }
-            set
-            {
-                _sliderText = value;
-                OnPropertyChanged(nameof(SliderText));
-            }
-        }
-
-
-
-
-        private string _commentText;
-
-        public string CommentText
-        {
-            get { return _commentText; }
-            set
-            {
-                _commentText = value;
-                OnPropertyChanged(nameof(CommentText));
-            }
-        }
-
-
-        private int _commentId;
-        public int CommentId
-        {
-            get => _commentId;
-            set
-            {
-                _commentId = value;
-                OnPropertyChanged(nameof(CommentId));
-            }
-        }
-
-
-
-
 
         private GameCommentDto _selectedComment;
-
         public GameCommentDto SelectedComment
         {
             get => _selectedComment;
@@ -316,6 +155,127 @@ namespace Vapour.ViewModel
             }
         }
 
+        private string _title;
+        public string Title
+        {
+            get => _title;
+            set
+            {
+                _title = value;
+                OnPropertyChanged(nameof(Title));
+            }
+        }
+
+        private string _averageRate;
+        public string AverageRate
+        {
+            get => _averageRate;
+            set
+            {
+                _averageRate = value;
+                OnPropertyChanged(nameof(AverageRate));
+            }
+        }
+
+        private string _commentButtonContent;
+        public string CommentButtonContent
+        {
+            get { return _commentButtonContent; }
+            set
+            {
+                _commentButtonContent = value;
+                OnPropertyChanged(nameof(CommentButtonContent));
+            }
+        }
+
+        private string _rateButtonContent;
+        public string RateButtonContent
+        {
+            get { return _rateButtonContent; }
+            set
+            {
+                _rateButtonContent = value;
+                OnPropertyChanged(nameof(RateButtonContent));
+            }
+        }
+
+        private int _sliderValue;
+        public int SliderValue
+        {
+            get { return _sliderValue; }
+            set
+            {
+                _sliderValue = value;
+                SliderText = value.ToString();
+                OnPropertyChanged(nameof(SliderValue));
+            }
+        }
+
+        private string _sliderText;
+        public string SliderText
+        {
+            get { return _sliderText; }
+            set
+            {
+                _sliderText = value;
+                OnPropertyChanged(nameof(SliderText));
+            }
+        }
+
+        private string _commentText;
+        public string CommentText
+        {
+            get { return _commentText; }
+            set
+            {
+                _commentText = value;
+                OnPropertyChanged(nameof(CommentText));
+            }
+        }
+
+        private int _commentId;
+        public int CommentId
+        {
+            get => _commentId;
+            set
+            {
+                _commentId = value;
+                OnPropertyChanged(nameof(CommentId));
+            }
+        }
+
+        private ICommand _playGame;
+        public ICommand PlayGame
+        {
+            get
+            {
+                return _playGame ?? (_playGame = new RelayCommand(
+                    (object o) => { MessageBox.Show("Gra jest właśnie uruchamiana"); },
+                    (object o) => { return true; }));
+            }
+        }
+
+        private ICommand _addComment;
+        public ICommand AddComment
+        {
+            get
+            {
+                return _addComment ?? (_addComment = new RelayCommand(
+                    (object o) => { MessageBox.Show("Komentarz został dodany"); },
+                    (object o) => { return true; }));
+            }
+        }
+
+        private ICommand _addRate;
+        public ICommand AddRate
+        {
+            get
+            {
+                return _addRate ?? (_addRate = new RelayCommand(
+                    (object o) => { MessageBox.Show("Ocena została dodana"); },
+                    (object o) => { return true; }));
+            }
+        }
 
         public bool CheckForCommentEdit()
         {
@@ -325,15 +285,20 @@ namespace Vapour.ViewModel
                 {
                     userId = c.UserId
                 };
-
-
+            try
+            {
                 if (query.First().userId == _authenticator.CurrentUser.Id)
                 {
                     CommentButtonContent = "Edytuj";
                     CommentText = SelectedComment.Text;
                     return true;
                 }
-                
+            }
+            catch (Exception e)
+            {
+                CommentButtonContent = "Dodaj nowy komentarz";
+                return false;
+            }
             CommentButtonContent = "Dodaj nowy komentarz";
             return false;
         }
@@ -348,7 +313,6 @@ namespace Vapour.ViewModel
                     userId = c.UserId,
                     rate = c.Rate1
                 };
-
             try
             {
                 if (query.First().userId == _authenticator.CurrentUser.Id)
@@ -364,11 +328,9 @@ namespace Vapour.ViewModel
                 SliderValue = 0;
                 return false;
             }
-
             RateButtonContent = "Dodaj ocene";
             SliderValue = 0;
             return false;
         }
-
     }
 }
