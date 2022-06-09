@@ -135,26 +135,23 @@ namespace Vapour.ViewModel
 
         private void GetUserGames()
         {
-            var userGames = _dataContext.GamesCollections.Where(u => u.UserId == _authenticator.CurrentUser.Id).ToList();
-            var games = _dataContext.Games.ToList();
-            var xd = new List<int>();
-
-            foreach (var x in userGames)
-            {
-                xd.Add(x.GameId);
-            }
-
-
-            foreach (var game in games)
-            {
-                if (xd.Contains(game.Id))
+            var userGames = from gs in _dataContext.GamesCollections
+                join g in _dataContext.Games on gs.GameId equals g.Id
+                where gs.UserId == _authenticator.CurrentUser.Id
+                select new
                 {
-                    _gamesCollection.Add(new GameDto()
+                    Title = g.Title,
+                    Id = g.Id,
+                };
+
+
+            foreach (var game in userGames)
+            {
+                _gamesCollection.Add(new GameDto()
                     {
                         Id = game.Id,
                         Title = game.Title,
                     });
-                }
             }
         }
 
