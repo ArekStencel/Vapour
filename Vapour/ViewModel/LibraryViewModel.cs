@@ -181,6 +181,8 @@ namespace Vapour.ViewModel
         }
 
 
+
+
         private ICommand _addComment;
         public ICommand AddComment
         {
@@ -190,6 +192,24 @@ namespace Vapour.ViewModel
                     (object o) =>
                     {
                         MessageBox.Show("Dodałeś recenzję!");
+                    },
+                    (object o) =>
+                    {
+                        return true;
+                    }));
+            }
+        }
+
+
+        private ICommand _addRate;
+        public ICommand AddRate
+        {
+            get
+            {
+                return _addRate ?? (_addRate = new RelayCommand(
+                    (object o) =>
+                    {
+                        MessageBox.Show("Dodałeś ocenę!");
                     },
                     (object o) =>
                     {
