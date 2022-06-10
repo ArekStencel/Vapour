@@ -34,8 +34,7 @@ namespace Vapour.ViewModel
 
         private List<GameCommentDto> GetGameComments(int id)
         {
-            var comments = _dataContext.Comments.ToList();
-            comments.Reverse();
+            var comments = _dataContext.Comments.OrderByDescending(x => x.CreatedAt).ToList();
             var gameComments = new List<GameCommentDto>();
             foreach (var comment in comments)
             {
@@ -290,6 +289,7 @@ namespace Vapour.ViewModel
                 else
                 {
                     CommentButtonContent = "Dodaj nowy komentarz";
+                    CommentText = "";
                 }
                 OnPropertyChanged(nameof(CommentEdit));
             }
@@ -356,7 +356,7 @@ namespace Vapour.ViewModel
                     {
                         if (CurrentRateId != null && RateEdit)
                         {
-                            MessageBox.Show("Edytowano poprzednią ocenę: "+SliderValue);
+                            MessageBox.Show("Edytowano poprzednią ocenę");
                             _dataContext.Rates.AddOrUpdate(new Rate()
                             {
                                 Id = CurrentRateId,
