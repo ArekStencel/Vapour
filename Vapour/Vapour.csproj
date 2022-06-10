@@ -157,6 +157,8 @@
     <Compile Include="Model\Dto\RegisterUserDto.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\IAuthenticationService.cs" />
+    <Compile Include="Services\IUserService.cs" />
+    <Compile Include="Services\UserService.cs" />
     <Compile Include="State\Authenticator.cs" />
     <Compile Include="State\IAuthenticator.cs" />
     <Compile Include="State\INavigator.cs" />
