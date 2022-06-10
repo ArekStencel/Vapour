@@ -22,7 +22,7 @@ namespace Vapour.View
             InitializeComponent();
         }
 
-
+        //Comment button
         public static DependencyProperty CommentButtonContentProperty =
             DependencyProperty.Register(
                 nameof(CommentButtonContent),
@@ -34,20 +34,7 @@ namespace Vapour.View
             set { SetValue(CommentButtonContentProperty, value); }
         }
 
-
-        public static DependencyProperty RateButtonContentProperty =
-            DependencyProperty.Register(
-                nameof(RateButtonContent),
-                typeof(string),
-                typeof(LibraryView));
-        public string RateButtonContent
-        {
-            get { return (string)GetValue(RateButtonContentProperty); }
-            set { SetValue(RateButtonContentProperty, value); }
-        }
-
-
-
+        //Comment text
         public static DependencyProperty CommentTextProperty =
             DependencyProperty.Register(
                 nameof(CommentText),
@@ -59,11 +46,19 @@ namespace Vapour.View
             set { SetValue(CommentTextProperty, value); }
         }
 
+        //Rate button
+        public static DependencyProperty RateButtonContentProperty =
+            DependencyProperty.Register(
+                nameof(RateButtonContent),
+                typeof(string),
+                typeof(LibraryView));
+        public string RateButtonContent
+        {
+            get { return (string)GetValue(RateButtonContentProperty); }
+            set { SetValue(RateButtonContentProperty, value); }
+        }
 
-
-
-
-
+        //Slider value
         public static DependencyProperty SliderValueProperty =
             DependencyProperty.Register(
                 nameof(SliderValue),
@@ -75,8 +70,7 @@ namespace Vapour.View
             set { SetValue(SliderValueProperty, value); }
         }
 
-
-
+        //Slider text
         public static DependencyProperty SliderTextProperty =
             DependencyProperty.Register(
                 nameof(SliderText),
@@ -88,6 +82,7 @@ namespace Vapour.View
             set { SetValue(SliderTextProperty, value); }
         }
 
+        //Slider method
         private void SliderValueChanged_(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Slider slider = sender as Slider;

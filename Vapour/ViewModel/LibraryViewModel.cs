@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Markup;
+using Vapour.Command;
 using Vapour.Model;
 using Vapour.Model.Dto;
 using Vapour.State;
@@ -29,8 +30,6 @@ namespace Vapour.ViewModel
             GetUserGames();
             CheckForRateEdit();
             SelectedGame = GamesCollection[0];
-            CommentButtonContent = "Dodaj nowy komentarz";
-            RateButtonContent = "Dodaj ocene";
         }
 
         private List<GameCommentDto> GetGameComments(int id)
@@ -113,10 +112,10 @@ namespace Vapour.ViewModel
                 Title = value.Title;
                 AverageRate = GetAverageRate(value.Id);
                 Comments = GetGameComments(value.Id);
-                OnPropertyChanged(nameof(SelectedGame));
-                CheckForRateEdit();
                 CheckForCommentEdit();
+                CheckForRateEdit();
                 CommentText = "";
+                OnPropertyChanged(nameof(SelectedGame));
             }
         }
 
@@ -244,6 +243,57 @@ namespace Vapour.ViewModel
             }
         }
 
+        private int _currentRateId;
+        public int CurrentRateId
+        {
+            get => _currentRateId;
+            set
+            {
+                _currentRateId = value;
+                OnPropertyChanged(nameof(CurrentRateId));
+            }
+        }
+
+        private bool _rateEdit;
+        public bool RateEdit
+        {
+            get => _rateEdit;
+            set
+            {
+                _rateEdit = value;
+                if (value)
+                {
+                    RateButtonContent = "Edytuj";
+                }
+                else
+                {
+                    RateButtonContent = "Dodaj ocene";
+                    SliderValue = 0;
+                }
+                OnPropertyChanged(nameof(RateEdit));
+            }
+        }
+
+        private bool _commentEdit;
+        public bool CommentEdit
+        {
+            get => _commentEdit;
+            set
+            {
+                _commentEdit = value;
+                if (value)
+                {
+                    CommentButtonContent = "Edytuj";
+                    CommentText = SelectedComment.Text;
+                }
+                else
+                {
+                    CommentButtonContent = "Dodaj nowy komentarz";
+                }
+                OnPropertyChanged(nameof(CommentEdit));
+            }
+        }
+
         private ICommand _playGame;
         public ICommand PlayGame
         {
@@ -261,7 +311,18 @@ namespace Vapour.ViewModel
             get
             {
                 return _addComment ?? (_addComment = new RelayCommand(
-                    (object o) => { MessageBox.Show("Komentarz został dodany"); },
+                    (object o) =>
+                    {
+                        if (SelectedComment != null && CommentEdit)
+                        {
+                            MessageBox.Show("EDIT:  id" + SelectedComment.Id.ToString() + " uid" + _authenticator.CurrentUser.Id + " gameid" + SelectedGame.Id + " text" + CommentText +" data"+SelectedComment.Date);
+                        }
+                        else
+                        {
+                            MessageBox.Show("NEW:  uid" + _authenticator.CurrentUser.Id + " gameid" + SelectedGame.Id + " text" + CommentText + " data" + DateTime.UtcNow);
+                        }
+                        Comments = GetGameComments(SelectedGame.Id);
+                    },
                     (object o) => { return true; }));
             }
         }
@@ -272,7 +333,18 @@ namespace Vapour.ViewModel
             get
             {
                 return _addRate ?? (_addRate = new RelayCommand(
-                    (object o) => { MessageBox.Show("Ocena została dodana"); },
+                    (object o) =>
+                    {
+                        if (CurrentRateId != null && RateEdit)
+                        {
+                            MessageBox.Show("EDIT:  id"+CurrentRateId.ToString()+" uid"+ _authenticator.CurrentUser.Id+" gameid"+SelectedGame.Id+" rate" + SliderValue);
+                        }
+                        else
+                        {
+                            MessageBox.Show("NEW:  uid" + _authenticator.CurrentUser.Id + " gameid" + SelectedGame.Id + " rate" + SliderValue);
+                        }
+                        AverageRate = GetAverageRate(SelectedGame.Id);
+                    },
                     (object o) => { return true; }));
             }
         }
@@ -289,17 +361,16 @@ namespace Vapour.ViewModel
             {
                 if (query.First().userId == _authenticator.CurrentUser.Id)
                 {
-                    CommentButtonContent = "Edytuj";
-                    CommentText = SelectedComment.Text;
+                    CommentEdit = true;
                     return true;
                 }
             }
             catch (Exception e)
             {
-                CommentButtonContent = "Dodaj nowy komentarz";
+                CommentEdit = false;
                 return false;
             }
-            CommentButtonContent = "Dodaj nowy komentarz";
+            CommentEdit = false;
             return false;
         }
 
@@ -311,25 +382,25 @@ namespace Vapour.ViewModel
                 select new
                 {
                     userId = c.UserId,
-                    rate = c.Rate1
+                    rate = c.Rate1,
+                    rateId = c.Id
                 };
             try
             {
                 if (query.First().userId == _authenticator.CurrentUser.Id)
                 {
-                    RateButtonContent = "Edytuj";
+                    RateEdit = true;
                     SliderValue = query.First().rate;
+                    CurrentRateId = query.First().rateId;
                     return true;
                 }
             }
             catch (Exception e)
             {
-                RateButtonContent = "Dodaj ocene";
-                SliderValue = 0;
+                RateEdit = false;
                 return false;
             }
-            RateButtonContent = "Dodaj ocene";
-            SliderValue = 0;
+            RateEdit = false;
             return false;
         }
     }
