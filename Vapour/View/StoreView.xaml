@@ -13,10 +13,22 @@
                 <ColumnDefinition/>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            
 
-            <ListView Grid.Column="0" ItemsSource="{Binding Games}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                      SelectedItem="{Binding SelectedGame}" MaxHeight="450" Margin="0,0,20,0">
+            <Grid.RowDefinitions>
+                <RowDefinition MaxHeight="50" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <DockPanel Grid.Row="0" VerticalAlignment="Center">
+                <TextBlock Text="Portfel [zł]: " FontWeight="Bold" FontSize="25" 
+                           DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Wallet}" FontSize="25" Margin="20 0 0 0" 
+                           DockPanel.Dock="Right" VerticalAlignment="Center"/>
+            </DockPanel>
+
+            <ListView Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Games}" 
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                      SelectedItem="{Binding SelectedGame}" MaxHeight="500" Margin="0,0,20,0">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}">
                         <Setter Property="BorderBrush" Value="LightGray" />
@@ -52,7 +64,7 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-        <Border Grid.Column="1" BorderBrush="LightGray" CornerRadius="10" 
+        <Border Grid.Column="1" Grid.RowSpan="2" BorderBrush="LightGray" CornerRadius="10" 
                 BorderThickness="1">
                 <Grid Grid.Column="1" Margin="12">
                 <Grid.RowDefinitions>

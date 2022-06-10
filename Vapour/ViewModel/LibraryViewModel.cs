@@ -40,13 +40,12 @@ namespace Vapour.ViewModel
             {
                 if (comment.GameId == id)
                 {
-                    var user = _dataContext.Users.Where(u => u.Id == comment.UserId).FirstOrDefault();
+                    var user = _dataContext.Users.FirstOrDefault(u => u.Id == comment.UserId);
                     var isFollowing = "";
                     if (_dataContext.Follows
                             .Where(x => x.FollowerId == user.Id)
                             .Where(y => y.UserId == _authenticator.CurrentUser.Id)
-                            .Where(z => z.FollowerId != _authenticator.CurrentUser.Id)
-                            .Count() != 0)
+                            .Count(z => z.FollowerId != _authenticator.CurrentUser.Id) != 0)
                     {
                         isFollowing = "(Obserwujesz)";
                     }
@@ -284,7 +283,14 @@ namespace Vapour.ViewModel
                 if (value)
                 {
                     CommentButtonContent = "Edytuj";
-                    CommentText = SelectedComment.Text;
+                    try
+                    {
+                        CommentText = SelectedComment.Text ?? "";
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
                 }
                 else
                 {
@@ -301,8 +307,8 @@ namespace Vapour.ViewModel
             get
             {
                 return _playGame ?? (_playGame = new RelayCommand(
-                    (object o) => { MessageBox.Show("Gra jest właśnie uruchamiana"); },
-                    (object o) => { return true; }));
+                    o => { MessageBox.Show("Gra jest właśnie uruchamiana"); },
+                    o => true));
             }
         }
 
@@ -312,7 +318,7 @@ namespace Vapour.ViewModel
             get
             {
                 return _addComment ?? (_addComment = new RelayCommand(
-                    (object o) =>
+                    o =>
                     {
                         if (SelectedComment != null && CommentEdit)
                         {
@@ -352,7 +358,7 @@ namespace Vapour.ViewModel
             get
             {
                 return _addRate ?? (_addRate = new RelayCommand(
-                    (object o) =>
+                    o =>
                     {
                         if (CurrentRateId != null && RateEdit)
                         {
@@ -380,7 +386,7 @@ namespace Vapour.ViewModel
                         AverageRate = GetAverageRate(SelectedGame.Id);
                         CheckForRateEdit();
                     },
-                    (object o) => { return true; }));
+                    o => true));
             }
         }
 

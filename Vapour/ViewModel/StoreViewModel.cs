@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using System.Windows;
 using System.Windows.Input;
 using Vapour.Model;
 using Vapour.Model.Dto;
+using Vapour.Services;
 using Vapour.State;
 using Vapour.ViewModel.Base;
 
@@ -16,6 +18,7 @@ namespace Vapour.ViewModel
     {
         private readonly VapourDatabaseEntities _dataContext;
         private readonly IAuthenticator _authenticator;
+        private readonly IUserService _userService;
 
         private List<GameDto> _games = new List<GameDto>();
         public List<GameDto> Games
@@ -47,7 +50,7 @@ namespace Vapour.ViewModel
             {
                 _selectedGame = value;
                 Title = value.Title;
-                Price = value.Price.ToString();
+                Price = value.Price;
                 Genre = value.Genre;
                 Currency = value.Currency;
                 Description = value.Description;
@@ -94,6 +97,17 @@ namespace Vapour.ViewModel
             {
                 _currency = value;
                 OnPropertyChanged(nameof(Currency));
+            }
+        }
+
+        private string _wallet;
+        public string Wallet
+        {
+            get => _wallet;
+            set
+            {
+                _wallet = value;
+                OnPropertyChanged(nameof(Wallet));
             }
         }
 
@@ -170,7 +184,7 @@ namespace Vapour.ViewModel
                 }
             }
 
-            return Math.Round((SumRate / howMany),2).ToString();
+            return Math.Round((SumRate / howMany), 2).ToString();
         }
 
         private List<GameCommentDto> GetGameComments(int id)
@@ -182,15 +196,14 @@ namespace Vapour.ViewModel
             {
                 if (comment.GameId == id)
                 {
-                    var user = _dataContext.Users.Where(u => u.Id == comment.UserId).FirstOrDefault();
+                    var user = _dataContext.Users.FirstOrDefault(u => u.Id == comment.UserId);
 
                     var isFollowing = "";
 
                     if (_dataContext.Follows
-                        .Where(x => x.FollowerId == user.Id)
-                        .Where(y => y.UserId == _authenticator.CurrentUser.Id)
-                        .Where(z => z.FollowerId != _authenticator.CurrentUser.Id)
-                        .Count() != 0)
+                            .Where(x => x.FollowerId == user.Id)
+                            .Where(y => y.UserId == _authenticator.CurrentUser.Id)
+                            .Count(z => z.FollowerId != _authenticator.CurrentUser.Id) != 0)
                     {
                         isFollowing = "(Obserwujesz)";
                     }
@@ -238,10 +251,9 @@ namespace Vapour.ViewModel
 
         private void SetButtonText()
         {
-            if(_dataContext.GamesCollections
-            .Where(g => g.GameId == _selectedGame.Id)
-            .Where(u => u.UserId == _authenticator.CurrentUser.Id)
-            .Count() != 0)
+            if (_dataContext.GamesCollections
+                   .Where(g => g.GameId == _selectedGame.Id)
+                   .Count(u => u.UserId == _authenticator.CurrentUser.Id) != 0)
             {
                 ButtonText = "Kupiony";
             }
@@ -251,12 +263,14 @@ namespace Vapour.ViewModel
             }
         }
 
-        public StoreViewModel(VapourDatabaseEntities dataContext, IAuthenticator authenticator)
+        public StoreViewModel(VapourDatabaseEntities dataContext, IAuthenticator authenticator, IUserService userService)
         {
             _dataContext = dataContext;
-            _authenticator = authenticator; 
+            _authenticator = authenticator;
+            _userService = userService;
             GetAllGames();
             SelectedGame = Games[0];
+            Wallet = _authenticator.CurrentUser.WalletBalance.ToString();
         }
 
         private ICommand _buyGame;
@@ -264,12 +278,11 @@ namespace Vapour.ViewModel
         {
             get
             {
-                return _buyGame ?? (_buyGame = new RelayCommand(
-                    (object o) =>
+                return _buyGame ?? (_buyGame = new RelayCommand(o =>
                     {
                         if (IsWalletBallanceGreaterThanGamePrice())
                         {
-                            MessageBoxResult declain = MessageBox.Show(
+                            MessageBox.Show(
                                 "Brak środków na koncie. \nCena gry: " 
                                 + _selectedGame.Price 
                                 + "\nŚrodki na koncie: " 
@@ -283,28 +296,30 @@ namespace Vapour.ViewModel
                             GameId = _selectedGame.Id,
                         }) ;
 
-                        MessageBoxResult accept = MessageBox.Show(
-                                "Gratulujemy zakupu. \nCena gry: "
-                                + _selectedGame.Price
-                                + "\nŚrodki na koncie: "
-                                + _authenticator.CurrentUser.WalletBalance
-                                + "\nSaldo po zakupie: "
-                                + (_authenticator.CurrentUser.WalletBalance-decimal.Parse(_selectedGame.Price)), 
-                                "Gratulujemy zakupu", MessageBoxButton.OK);
+                        MessageBox.Show(
+                            "Gratulujemy zakupu. \nCena gry: "
+                            + _selectedGame.Price
+                            + "\nŚrodki na koncie: "
+                            + _authenticator.CurrentUser.WalletBalance
+                            + "\nSaldo po zakupie: "
+                            + (_authenticator.CurrentUser.WalletBalance - decimal.Parse(_selectedGame.Price)), 
+                            "Gratulujemy zakupu", MessageBoxButton.OK);
 
-                        _dataContext.Users.Where(u => u.Id == _authenticator.CurrentUser.Id)
-                        .First().WalletBalance -= decimal.Parse(_selectedGame.Price);
+                        var walletBalanceAfterPurchase = _authenticator.CurrentUser.WalletBalance - decimal.Parse(_selectedGame.Price);
 
+                        _dataContext.Users
+                            .First(u => u.Id == _authenticator.CurrentUser.Id)
+                            .WalletBalance = walletBalanceAfterPurchase;
                         _dataContext.SaveChanges();
-                        SetButtonText();
 
+                        Wallet = _authenticator.CurrentUser.WalletBalance.ToString();
+                        SetButtonText();
                     },
-                    (object o) =>
+                    o =>
                     {
                         if (_dataContext.GamesCollections
-                        .Where(g => g.GameId == _selectedGame.Id)
-                        .Where(u => u.UserId == _authenticator.CurrentUser.Id)
-                        .Count() != 0)
+                                .Where(g => g.GameId == _selectedGame.Id)
+                                .Count(u => u.UserId == _authenticator.CurrentUser.Id) != 0)
                         {
                             return false;
                         }

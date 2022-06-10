@@ -41,6 +41,8 @@ namespace Vapour
             var services = new ServiceCollection();
 
             services.AddSingleton<IAuthenticationService, AuthenticationService>();
+            services.AddSingleton<IUserService, UserService>();
+
             services.AddSingleton<IRootViewModelFactory, RootViewModelFactory>();
             services.AddSingleton<IViewModelFactory<LibraryViewModel>, LibraryViewModelFactory>();
             services.AddSingleton<IViewModelFactory<CommunityViewModel>, CommunityViewModelFactory>();

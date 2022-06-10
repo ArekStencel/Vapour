@@ -14,10 +14,11 @@ namespace Vapour.Services
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IPasswordHasher _passwordHasher;
-        private readonly VapourDatabaseEntities _data = new VapourDatabaseEntities();
+        private readonly VapourDatabaseEntities _data;
 
-        public AuthenticationService(IPasswordHasher passwordHasher)
+        public AuthenticationService(VapourDatabaseEntities data, IPasswordHasher passwordHasher)
         {
+            _data = data;
             _passwordHasher = passwordHasher;
         }
 
