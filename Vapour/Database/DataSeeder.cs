@@ -37,9 +37,9 @@ namespace Vapour.Database
                 {
                     var users = AddUsers();
                     _dataContext.Users.AddRange(users);
-                    //
-                    // var randomGeneratedUsers = AddRandomGeneratedUsers();
-                    // _dataContext.Users.AddRange(randomGeneratedUsers);
+                    
+                     var randomGeneratedUsers = AddRandomGeneratedUsers();
+                     _dataContext.Users.AddRange(randomGeneratedUsers);
 
                     _dataContext.SaveChanges();
                 }
@@ -56,8 +56,8 @@ namespace Vapour.Database
                     var games = AddGames();
                     _dataContext.Games.AddRange(games);
 
-                    // var randomGeneratedGames = AddRandomGeneratedGames();
-                    //  _dataContext.Games.AddRange(randomGeneratedGames);
+                    var randomGeneratedGames = AddRandomGeneratedGames();
+                    _dataContext.Games.AddRange(randomGeneratedGames);
                   
                      _dataContext.SaveChanges();
                 }
@@ -81,12 +81,12 @@ namespace Vapour.Database
                     var gamesCollections = AddGamesCollections();
                     _dataContext.GamesCollections.AddRange(gamesCollections);
 
-                    // var (generatedGamesCollections, generatedRates, generatedComments) 
-                    //     = AddRandomGeneratedGamesCollectionCommentsRates();
-                    // _dataContext.GamesCollections.AddRange(generatedGamesCollections);
-                    // _dataContext.Rates.AddRange(generatedRates);
-                    // _dataContext.Comments.AddRange(generatedComments);
-                    
+                    var (generatedGamesCollections, generatedRates, generatedComments)
+                         = AddRandomGeneratedGamesCollectionCommentsRates();
+                    _dataContext.GamesCollections.AddRange(generatedGamesCollections);
+                    _dataContext.Rates.AddRange(generatedRates);
+                    _dataContext.Comments.AddRange(generatedComments);
+
                     _dataContext.SaveChanges();
                 }
 
@@ -95,8 +95,8 @@ namespace Vapour.Database
                     var follows = AddFollows();
                     _dataContext.Follows.AddRange(follows);
 
-                    // var randomGeneratedFollowers = AddRandomGeneratedFollowers();
-                    // _dataContext.Follows.AddRange(randomGeneratedFollowers);
+                    var randomGeneratedFollowers = AddRandomGeneratedFollowers();
+                    _dataContext.Follows.AddRange(randomGeneratedFollowers);
 
                     _dataContext.SaveChanges();
                 }
