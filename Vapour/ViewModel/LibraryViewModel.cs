@@ -268,7 +268,7 @@ namespace Vapour.ViewModel
                 else
                 {
                     RateButtonContent = "Dodaj ocene";
-                    SliderValue = 0;
+                    SliderValue = 1;
                 }
                 OnPropertyChanged(nameof(RateEdit));
             }
