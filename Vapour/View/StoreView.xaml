@@ -15,23 +15,20 @@
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition />
+                <RowDefinition MaxHeight="50" />
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
+            <DockPanel Grid.Row="0" VerticalAlignment="Center">
+                <TextBlock Text="Portfel [zł]: " FontWeight="Bold" FontSize="25" 
+                           DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Wallet}" FontSize="25" Margin="20 0 0 0" 
+                           DockPanel.Dock="Right" VerticalAlignment="Center"/>
+            </DockPanel>
 
-                <TextBlock Text="Portfel: " Grid.Column="0" FontWeight="Bold" FontSize="15" VerticalAlignment="Center"/>
-                <TextBlock Text="{Binding Wallet}" Grid.Column="1" Margin="20 0 0 0" />
-            </Grid>
-
-        <ListView Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Games}" 
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                  SelectedItem="{Binding SelectedGame}" MaxHeight="450" Margin="0,0,20,0">
+            <ListView Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Games}" 
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                      SelectedItem="{Binding SelectedGame}" MaxHeight="500" Margin="0,0,20,0">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}">
                         <Setter Property="BorderBrush" Value="LightGray" />
@@ -67,7 +64,7 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-        <Border Grid.Column="1" BorderBrush="LightGray" CornerRadius="10" 
+        <Border Grid.Column="1" Grid.RowSpan="2" BorderBrush="LightGray" CornerRadius="10" 
                 BorderThickness="1">
                 <Grid Grid.Column="1" Margin="12">
                 <Grid.RowDefinitions>

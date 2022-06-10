@@ -282,7 +282,7 @@ namespace Vapour.ViewModel
                     {
                         if (IsWalletBallanceGreaterThanGamePrice())
                         {
-                            var declain = MessageBox.Show(
+                            MessageBox.Show(
                                 "Brak środków na koncie. \nCena gry: " 
                                 + _selectedGame.Price 
                                 + "\nŚrodki na koncie: " 
@@ -296,29 +296,22 @@ namespace Vapour.ViewModel
                             GameId = _selectedGame.Id,
                         }) ;
 
-                        var accept = MessageBox.Show(
-                                "Gratulujemy zakupu. \nCena gry: "
-                                + _selectedGame.Price
-                                + "\nŚrodki na koncie: "
-                                + _authenticator.CurrentUser.WalletBalance
-                                + "\nSaldo po zakupie: "
-                                + (_authenticator.CurrentUser.WalletBalance - decimal.Parse(_selectedGame.Price)), 
-                                "Gratulujemy zakupu", MessageBoxButton.OK);
+                        MessageBox.Show(
+                            "Gratulujemy zakupu. \nCena gry: "
+                            + _selectedGame.Price
+                            + "\nŚrodki na koncie: "
+                            + _authenticator.CurrentUser.WalletBalance
+                            + "\nSaldo po zakupie: "
+                            + (_authenticator.CurrentUser.WalletBalance - decimal.Parse(_selectedGame.Price)), 
+                            "Gratulujemy zakupu", MessageBoxButton.OK);
 
                         var walletBalanceAfterPurchase = _authenticator.CurrentUser.WalletBalance - decimal.Parse(_selectedGame.Price);
 
-                        // await _userService.UpdateWalletBalance(_authenticator.CurrentUser.Id, walletBalanceAfterPurchase);
-
-                            // _dataContext.Users.AddOrUpdate(new User()
-                            //     {
-                            //         Id = _authenticator.CurrentUser.Id,
-                            //         WalletBalance = walletBalanceAfterPurchase
-                            //     });
-
-                            _dataContext.Users.First(u => u.Id == _authenticator.CurrentUser.Id)
-                                .WalletBalance = walletBalanceAfterPurchase;
-
+                        _dataContext.Users
+                            .First(u => u.Id == _authenticator.CurrentUser.Id)
+                            .WalletBalance = walletBalanceAfterPurchase;
                         _dataContext.SaveChanges();
+
                         Wallet = _authenticator.CurrentUser.WalletBalance.ToString();
                         SetButtonText();
                     },
