@@ -283,14 +283,7 @@ namespace Vapour.ViewModel
                 if (value)
                 {
                     CommentButtonContent = "Edytuj";
-                    try
-                    {
-                        CommentText = SelectedComment.Text ?? "";
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e);
-                    }
+                    CommentText = SelectedComment.Text;
                 }
                 else
                 {
