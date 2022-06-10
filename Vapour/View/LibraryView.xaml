@@ -129,7 +129,7 @@
 
                     <ListView Grid.Column="1" ItemsSource="{Binding Comments}" Margin="10 10 0 10" 
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="false"
-                              SelectedItem="{Binding SelectedComment}">
+                              SelectedItem="{Binding SelectedComment}" MinHeight="400" MaxHeight="400">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="{x:Type ListViewItem}">
                                 <Setter Property="BorderBrush" Value="LightGray" />

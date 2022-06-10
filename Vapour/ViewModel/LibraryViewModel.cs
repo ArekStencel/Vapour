@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,13 +29,13 @@ namespace Vapour.ViewModel
             _dataContext = dataContext;
             _authenticator = authenticator;
             GetUserGames();
-            CheckForRateEdit();
             SelectedGame = GamesCollection[0];
         }
 
         private List<GameCommentDto> GetGameComments(int id)
         {
             var comments = _dataContext.Comments.ToList();
+            comments.Reverse();
             var gameComments = new List<GameCommentDto>();
             foreach (var comment in comments)
             {
@@ -315,13 +316,31 @@ namespace Vapour.ViewModel
                     {
                         if (SelectedComment != null && CommentEdit)
                         {
-                            MessageBox.Show("EDIT:  id" + SelectedComment.Id.ToString() + " uid" + _authenticator.CurrentUser.Id + " gameid" + SelectedGame.Id + " text" + CommentText +" data"+SelectedComment.Date);
+                            MessageBox.Show("Komentarz został edytowany");
+                            _dataContext.Comments.AddOrUpdate(new Comment()
+                            {
+                                Id = SelectedComment.Id,
+                                UserId = _authenticator.CurrentUser.Id,
+                                GameId = SelectedGame.Id,
+                                Text = CommentText,
+                                CreatedAt = Convert.ToDateTime(SelectedComment.Date)
+                            });
+                            _dataContext.SaveChanges();
                         }
                         else
                         {
-                            MessageBox.Show("NEW:  uid" + _authenticator.CurrentUser.Id + " gameid" + SelectedGame.Id + " text" + CommentText + " data" + DateTime.UtcNow);
+                            MessageBox.Show("Pomyślnie dodano komentarz");
+                            _dataContext.Comments.Add(new Comment()
+                            {
+                                UserId = _authenticator.CurrentUser.Id,
+                                GameId = SelectedGame.Id,
+                                Text = CommentText,
+                                CreatedAt = DateTime.UtcNow
+                            });
+                            _dataContext.SaveChanges();
                         }
                         Comments = GetGameComments(SelectedGame.Id);
+                        CheckForCommentEdit();
                     },
                     (object o) => { return true; }));
             }
@@ -337,13 +356,29 @@ namespace Vapour.ViewModel
                     {
                         if (CurrentRateId != null && RateEdit)
                         {
-                            MessageBox.Show("EDIT:  id"+CurrentRateId.ToString()+" uid"+ _authenticator.CurrentUser.Id+" gameid"+SelectedGame.Id+" rate" + SliderValue);
+                            MessageBox.Show("Edytowano poprzednią ocenę: "+SliderValue);
+                            _dataContext.Rates.AddOrUpdate(new Rate()
+                            {
+                                Id = CurrentRateId,
+                                UserId = _authenticator.CurrentUser.Id,
+                                GameId = SelectedGame.Id,
+                                Rate1 = SliderValue
+                            });
+                            _dataContext.SaveChanges();
                         }
                         else
                         {
-                            MessageBox.Show("NEW:  uid" + _authenticator.CurrentUser.Id + " gameid" + SelectedGame.Id + " rate" + SliderValue);
+                            MessageBox.Show("Dodano nową ocenę: " + SliderValue);
+                            _dataContext.Rates.Add(new Rate()
+                            {
+                                UserId = _authenticator.CurrentUser.Id,
+                                GameId = SelectedGame.Id,
+                                Rate1 = SliderValue
+                            });
+                            _dataContext.SaveChanges();
                         }
                         AverageRate = GetAverageRate(SelectedGame.Id);
+                        CheckForRateEdit();
                     },
                     (object o) => { return true; }));
             }
