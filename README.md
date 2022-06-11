@@ -12,5 +12,8 @@ Vapour lets you to buy new games, rate them, follow peoples.
 - ArekStencel
 - Streyter
 
-## ScreenShots
-![LoginForm](./ss/loginform.png)
+## Screenshots
+![LoginPage](./ss/loginpage.png)
+![LibraryPage](./ss/librarypage.png)
+![ShopPage](./ss/shoppage.png)
+![RegisterPage](./ss/registerpage.png)
