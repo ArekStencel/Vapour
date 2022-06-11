@@ -24,4 +24,15 @@ namespace Vapour.Model.Dto
         public string Description { get; set; }
         public string ReleaseDate { get; set; }
     }
+    public class UserDto
+    {
+        
+
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string IsF { get; set; }
+        public bool IfF { get; set; }
+    }
+
+
 }
