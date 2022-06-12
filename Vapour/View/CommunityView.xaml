@@ -38,7 +38,7 @@
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" FontWeight="Bold" Text="Siema" Margin="5 0" />
+                    <TextBlock Grid.Column="0" FontWeight="Bold" Text="Witamy" Margin="5 0" />
                     <TextBlock Grid.Column="1" FontWeight="Bold" Text="{Binding Name}" x:Name="PathTextBlock0" Margin="5 0" />
                 </Grid>
 
@@ -132,7 +132,7 @@
                                     Content="{Binding BText}"
                                     Width="auto"
                                     FontSize="19"
-                                    Command="{Binding AddFollow}">
+                                    Command="{Binding ChangeFollow}">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Background" Value="{StaticResource BrushColor3}"/>
@@ -171,7 +171,7 @@
                             <Grid Grid.Column="1">
                                 <TextBlock Grid.Row="0" VerticalAlignment="Center" Padding="40 0 0 0">
                                         <Run Text="{Binding Name}" FontSize="18" />
-                                        <Run Text="{Binding IsF}" FontSize="12" />
+                                        <Run Text="{Binding IsFollow}" FontSize="12" />
                                 </TextBlock>
                             </Grid>
                         </Grid>

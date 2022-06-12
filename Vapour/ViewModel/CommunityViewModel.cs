@@ -77,25 +77,25 @@ namespace Vapour.ViewModel
             }
         }
 
-        private bool _iff;
-        public bool IfF
+        private bool _iffollow;
+        public bool IfFollow
         {
-            get => _iff;
+            get => _iffollow;
             set
             {
-                _iff = value;
-                OnPropertyChanged(nameof(IfF));
+                _iffollow = value;
+                OnPropertyChanged(nameof(IfFollow));
             }
         }
 
-        private string _isf;
-        public string IsF
+        private string _isfollow;
+        public string IsFollow
         {
-            get => _isf;
+            get => _isfollow;
             set
             {
-                _isf = value;
-                OnPropertyChanged(nameof(IsF));
+                _isfollow = value;
+                OnPropertyChanged(nameof(IsFollow));
             }
         }
 
@@ -219,8 +219,8 @@ namespace Vapour.ViewModel
                 {
                     Id = value.Id;
                     Nick = value.Name;
-                    IsF = value.IsF;
-                    IfF = value.IfF;
+                    IsFollow = value.IsFollow;
+                    IfFollow = value.IfFollow;
                     CButton();
                 }
 
@@ -239,15 +239,15 @@ namespace Vapour.ViewModel
             var Alluser = new List<UserDto>();
             foreach (var user in users)
             {
-                bool ifF = false;
-                var isF = "";
+                bool ifFollow = false;
+                var isFollow = "";
                 if (_dataContext.Follows
                         .Where(x => x.FollowerId == user.Id)
                         .Where(y => y.UserId == _authenticator.CurrentUser.Id)
                         .Count(z => z.FollowerId != _authenticator.CurrentUser.Id) != 0)
                 {
-                    ifF = true;
-                    isF =  "(obserwowany)";
+                    ifFollow = true;
+                    isFollow =  "(obserwowany)";
                 }
                 if (user.Id != _authenticator.CurrentUser.Id)
                 {
@@ -256,8 +256,8 @@ namespace Vapour.ViewModel
                     {
                         Id = user.Id,
                         Name = user.Name,
-                        IsF = isF,
-                        IfF = ifF,
+                        IsFollow = isFollow,
+                        IfFollow = ifFollow,
                     }); 
                 }
             }
@@ -278,21 +278,8 @@ namespace Vapour.ViewModel
 
             foreach (var u in users)
             {
-                if (u.Name.Contains(searching))
+                if (u.Name.ToLower().Contains(searching.ToLower()))
                 {
-
-                    bool ifF = false;
-                    var isF = "";
-
-                    if (_dataContext.Follows
-                            .Where(x => x.FollowerId == u.Id)
-                            .Where(y => y.UserId == _authenticator.CurrentUser.Id)
-                            .Count(z => z.FollowerId != _authenticator.CurrentUser.Id) != 0)
-                    {
-                        ifF = true;
-                        isF = "(Obserwujesz)";
-                    }
-
                     if (u.Id != _authenticator.CurrentUser.Id)
                     {
 
@@ -300,10 +287,21 @@ namespace Vapour.ViewModel
                         {
                             Id = u.Id,
                             Name = u.Name,
-                            IsF = isF,
-                            IfF = ifF,
+                            IsFollow = "",
+                            IfFollow = false,
                         });
                     }
+                }
+            }
+            foreach (var u in user)
+            {
+                if (_dataContext.Follows
+                        .Where(x => x.FollowerId == u.Id)
+                        .Where(y => y.UserId == _authenticator.CurrentUser.Id)
+                        .Count(z => z.FollowerId != _authenticator.CurrentUser.Id) != 0)
+                {
+                    u.IfFollow = true;
+                    u.IsFollow = "(Obserwujesz)";
                 }
             }
             if (user == null)
@@ -366,17 +364,17 @@ namespace Vapour.ViewModel
 
 
 
-        private ICommand _addfollow;
-        public ICommand AddFollow
+        private ICommand _changefollow;
+        public ICommand ChangeFollow
         {
             get
             {
-                return _addfollow ?? (_addfollow = new RelayCommand(
+                return _changefollow ?? (_changefollow = new RelayCommand(
                     o =>
                     {
                         if (SelectedUser != null)
                         {
-                            if (SelectedUser.IfF == true) {
+                            if (SelectedUser.IfFollow == true) {
 
                                 var Del = _dataContext.Follows.Where(g => g.FollowerId == _selectedUser.Id).First(f => f.UserId == _authenticator.CurrentUser.Id);
                                 _dataContext.Follows.Remove(Del);

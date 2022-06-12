@@ -30,8 +30,8 @@ namespace Vapour.Model.Dto
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public string IsF { get; set; }
-        public bool IfF { get; set; }
+        public string IsFollow { get; set; }
+        public bool IfFollow { get; set; }
     }
 
 
