@@ -38,7 +38,7 @@
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" FontWeight="Bold" Text="Witamy" Margin="5 0" />
+                    <TextBlock Grid.Column="0" FontWeight="Bold" Text="Witaj" Margin="5 0" />
                     <TextBlock Grid.Column="1" FontWeight="Bold" Text="{Binding Name}" x:Name="PathTextBlock0" Margin="5 0" />
                 </Grid>
 
