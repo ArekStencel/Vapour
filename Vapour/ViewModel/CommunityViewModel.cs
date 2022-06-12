@@ -378,8 +378,8 @@ namespace Vapour.ViewModel
                         {
                             if (SelectedUser.IfF == true) {
 
-                                var xd = _dataContext.Follows.Where(g => g.FollowerId == _selectedUser.Id).First(f => f.UserId == _authenticator.CurrentUser.Id);
-                                _dataContext.Follows.Remove(xd);
+                                var Del = _dataContext.Follows.Where(g => g.FollowerId == _selectedUser.Id).First(f => f.UserId == _authenticator.CurrentUser.Id);
+                                _dataContext.Follows.Remove(Del);
 
                                 _dataContext.SaveChanges();
                             }
