@@ -263,11 +263,11 @@ namespace Vapour.ViewModel
             }
         }
 
-        public StoreViewModel(VapourDatabaseEntities dataContext, IAuthenticator authenticator, IUserService userService)
+        public StoreViewModel(VapourDatabaseEntities dataContext, IAuthenticator authenticator)
         {
             _dataContext = dataContext;
             _authenticator = authenticator;
-            _userService = userService;
+            
             GetAllGames();
             SelectedGame = Games[0];
             Wallet = _authenticator.CurrentUser.WalletBalance.ToString();

@@ -4,6 +4,7 @@
     {
         Login,
         Register,
+        Welcome,
         Library,
         Store,
         Community  

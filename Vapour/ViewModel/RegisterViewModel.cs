@@ -8,6 +8,7 @@ using Vapour.Command;
 using Vapour.Model;
 using Vapour.State;
 using Vapour.ViewModel.Base;
+using Vapour.ViewModel.Factories;
 
 namespace Vapour.ViewModel
 {

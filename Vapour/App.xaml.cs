@@ -49,6 +49,7 @@ namespace Vapour
             services.AddSingleton<IViewModelFactory<StoreViewModel>, StoreViewModelFactory>();
             services.AddSingleton<IViewModelFactory<LoginViewModel>, LoginViewModelFactory>();
             services.AddSingleton<IViewModelFactory<RegisterViewModel>, RegisterViewModelFactory>();
+            services.AddSingleton<IViewModelFactory<WelcomeViewModel>, WelcomeViewModelFactory>();
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
             services.AddScoped<INavigator, Navigator>();

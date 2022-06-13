@@ -8,18 +8,16 @@ namespace Vapour.ViewModel.Factories
     {
         private readonly VapourDatabaseEntities _dataContext;
         private readonly IAuthenticator _authenticator;
-        private readonly IUserService _userService;
 
-        public StoreViewModelFactory(VapourDatabaseEntities dataContext, IAuthenticator authenticator, IUserService userService)
+        public StoreViewModelFactory(VapourDatabaseEntities dataContext, IAuthenticator authenticator)
         {
             _dataContext = dataContext;
             _authenticator = authenticator;
-            _userService = userService;
         }
 
         public StoreViewModel CreateViewModel()
         {
-            return new StoreViewModel(_dataContext, _authenticator, _userService);
+            return new StoreViewModel(_dataContext, _authenticator);
         }
     }
 }
