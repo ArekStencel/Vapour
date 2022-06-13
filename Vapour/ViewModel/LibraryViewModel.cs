@@ -29,7 +29,23 @@ namespace Vapour.ViewModel
             _dataContext = dataContext;
             _authenticator = authenticator;
             GetUserGames();
-            SelectedGame = GamesCollection[0];
+            XD();
+        }
+
+
+        private void XD()
+        {
+            if (GamesCollection.Count > 0)
+            {
+                SelectedGame = GamesCollection[0];
+                PanelVisibility = "Visible";
+                TextBlockVisibility = "Hidden";
+            }
+            else
+            {
+                PanelVisibility = "Hidden";
+                TextBlockVisibility = "Visible";
+            }
         }
 
         private List<GameCommentDto> GetGameComments(int id)
@@ -150,6 +166,28 @@ namespace Vapour.ViewModel
                 }
                 OnPropertyChanged(nameof(SelectedComment));
                 CheckForCommentEdit();
+            }
+        }
+
+        private string _panelVisibility;
+        public string PanelVisibility
+        {
+            get => _panelVisibility;
+            set
+            {
+                _panelVisibility = value;
+                OnPropertyChanged(nameof(PanelVisibility));
+            }
+        }
+
+        private string _textBlockVisibility;
+        public string TextBlockVisibility
+        {
+            get => _textBlockVisibility;
+            set
+            {
+                _textBlockVisibility = value;
+                OnPropertyChanged(nameof(TextBlockVisibility));
             }
         }
 
