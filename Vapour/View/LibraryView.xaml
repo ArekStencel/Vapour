@@ -11,7 +11,7 @@
 
 
 
-    <Grid Margin="15">
+    <Grid Margin="15" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition Width="7*"/>
@@ -21,8 +21,10 @@
             <Style BasedOn="{StaticResource LoginButton}" TargetType="Button" />
         </Grid.Resources>
 
-        <ListView Visibility="{Binding PanelVisibility}" Grid.Column="0" ItemsSource="{Binding GamesCollection}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                  SelectedItem="{Binding SelectedGame}" Margin="0,0,20,0" MaxHeight="500">
+        <TextBlock Grid.ColumnSpan="2" Text="Brak gier" Visibility="{Binding TextVisibility}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="50"/>
+
+        <ListView Grid.Column="0" ItemsSource="{Binding GamesCollection}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                      SelectedItem="{Binding SelectedGame}" Margin="0,0,20,0" MaxHeight="500" Visibility="{Binding PanelVisibility}">
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="BorderBrush" Value="LightGray" />
@@ -54,9 +56,7 @@
             </ListView.ItemTemplate>
         </ListView>
 
-
-        <TextBlock Visibility="{Binding TextBlockVisibility}" Grid.Column="0" Grid.ColumnSpan="2" Text="Aby zakupić gry przejdź do sklepu" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
-        <Border Visibility="{Binding PanelVisibility}" Grid.Column="1" BorderBrush="LightGray" CornerRadius="10" BorderThickness="1" MaxHeight="600">
+        <Border Grid.Column="1" BorderBrush="LightGray" CornerRadius="10" BorderThickness="1" MaxHeight="600" Visibility="{Binding PanelVisibility}">
             <Grid Grid.Column="1" Margin="12">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.5*"/>

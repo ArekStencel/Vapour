@@ -29,22 +29,21 @@ namespace Vapour.ViewModel
             _dataContext = dataContext;
             _authenticator = authenticator;
             GetUserGames();
-            XD();
+            CheckIfLibraryIsEmpty();
         }
 
-
-        private void XD()
+        private void CheckIfLibraryIsEmpty()
         {
-            if (GamesCollection.Count > 0)
+            if (_gamesCollection.Count > 0)
             {
                 SelectedGame = GamesCollection[0];
+                TextVisibility = "Hidden";
                 PanelVisibility = "Visible";
-                TextBlockVisibility = "Hidden";
             }
             else
             {
+                TextVisibility = "Visible";
                 PanelVisibility = "Hidden";
-                TextBlockVisibility = "Visible";
             }
         }
 
@@ -169,6 +168,17 @@ namespace Vapour.ViewModel
             }
         }
 
+        private string _textVisibility;
+        public string TextVisibility
+        {
+            get => _textVisibility;
+            set
+            {
+                _textVisibility = value;
+                OnPropertyChanged(nameof(TextVisibility));
+            }
+        }
+
         private string _panelVisibility;
         public string PanelVisibility
         {
@@ -177,17 +187,6 @@ namespace Vapour.ViewModel
             {
                 _panelVisibility = value;
                 OnPropertyChanged(nameof(PanelVisibility));
-            }
-        }
-
-        private string _textBlockVisibility;
-        public string TextBlockVisibility
-        {
-            get => _textBlockVisibility;
-            set
-            {
-                _textBlockVisibility = value;
-                OnPropertyChanged(nameof(TextBlockVisibility));
             }
         }
 

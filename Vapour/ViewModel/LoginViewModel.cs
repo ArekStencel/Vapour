@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Vapour.Command;
 using Vapour.Model;
 using Vapour.State;
+using Vapour.ViewModel.Factories;
 
 namespace Vapour.ViewModel
 {
