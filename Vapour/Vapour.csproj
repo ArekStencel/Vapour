@@ -32,6 +32,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -149,6 +150,7 @@
     <Compile Include="Command\LoginCommand.cs" />
     <Compile Include="Command\LogoutCommand.cs" />
     <Compile Include="Command\NavigateToRegisterFormCommand.cs" />
+    <Compile Include="Command\NavigateToStoreViewModelCommand.cs" />
     <Compile Include="Command\RegisterCommand.cs" />
     <Compile Include="Command\UpdateCurrentViewModelCommand.cs" />
     <Compile Include="Exception\InvalidPasswordException.cs" />
@@ -175,10 +177,12 @@
     <Compile Include="ViewModel\Factories\RegisterViewModelFactory.cs" />
     <Compile Include="ViewModel\Factories\RootViewModelFactory.cs" />
     <Compile Include="ViewModel\Factories\StoreViewModelFactory.cs" />
+    <Compile Include="ViewModel\Factories\WelcomeViewModelFactory.cs" />
     <Compile Include="ViewModel\LibraryViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\RegisterViewModel.cs" />
     <Compile Include="ViewModel\StoreViewModel.cs" />
+    <Compile Include="ViewModel\WelcomeViewModel.cs" />
     <Compile Include="View\CommunityView.xaml.cs">
       <DependentUpon>CommunityView.xaml</DependentUpon>
     </Compile>
@@ -196,6 +200,9 @@
     </Compile>
     <Compile Include="View\StoreView.xaml.cs">
       <DependentUpon>StoreView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WelcomeView.xaml.cs">
+      <DependentUpon>WelcomeView.xaml</DependentUpon>
     </Compile>
     <Page Include="Style\ColorPalette.xaml">
       <SubType>Designer</SubType>
@@ -281,6 +288,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\WelcomeView.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

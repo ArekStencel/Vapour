@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Vapour.Model;
 using Vapour.State;
 using Vapour.ViewModel;
+using Vapour.ViewModel.Factories;
 
 namespace Vapour.Command
 {
@@ -38,7 +39,7 @@ namespace Vapour.Command
 
             if (success)
             {
-                _navigator.CurrentViewModel = new LibraryViewModel(_dataContext, _authenticator);
+                _navigator.CurrentViewModel = new WelcomeViewModel(_navigator, _authenticator, _dataContext);
             }
         }
     }

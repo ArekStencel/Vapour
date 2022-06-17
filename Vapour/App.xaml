@@ -4,7 +4,6 @@
              xmlns:viewmodel="clr-namespace:Vapour.ViewModel"
              xmlns:view="clr-namespace:Vapour.View"
              xmlns:local="clr-namespace:Vapour">
-    <!-- StartupUri="View/MainWindowView.xaml"> -->
 
     <Application.Resources>
 
@@ -32,6 +31,11 @@
             <DataTemplate DataType="{x:Type viewmodel:RegisterViewModel}">
                 <view:RegisterView RegisterCommand="{Binding RegisterCommand}"/>
             </DataTemplate>
+            
+            <DataTemplate DataType="{x:Type viewmodel:WelcomeViewModel}">
+                <view:WelcomeView />
+            </DataTemplate>
+            
         </ResourceDictionary>
 
     </Application.Resources>

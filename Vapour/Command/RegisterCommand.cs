@@ -6,6 +6,7 @@ using Vapour.Model.Dto;
 using Vapour.State;
 using Vapour.View;
 using Vapour.ViewModel;
+using Vapour.ViewModel.Factories;
 
 namespace Vapour.Command
 {
